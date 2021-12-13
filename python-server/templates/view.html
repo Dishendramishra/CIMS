@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRL CTS</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="static/styles/bootstrap.css">
+    <script src="static/js/sweetalert2@11.js"></script>
+
+    <script src="static/js/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="static/styles/jquery.modal.min.css" />
+    
+    <style>
+        html,
+        body {
+            background-image: url("static/img/background.png");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        .table_layout {
+            margin: auto;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+
+        td {
+            padding: 20px;
+        }
+
+        input,
+        select {
+            border-radius: 5px;
+            border-width: 2px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="color: white; margin: 30px;   text-shadow: 2px 2px #4576fd">PRL CTS</h1>
+    
+    <table class="table_layout" id="items-table">
+        <tr>
+            <td><label>CPU</label></td>
+            <td><input type="text" name="" id="cpu-input" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" id='cpu-btn' class="scan-qr-btn" data-input="cpu-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>Motherboard</label> </td>
+            <td><input type="text" name="" id="mobo-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="mobo-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>RAM</label> </td>
+            <td><input type="text" name="" id="ram-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="ram-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>HARD DISK</label> </td>
+            <td><input type="text" name="" id="hdd-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="hdd-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>SMPS</label> </td>
+            <td><input type="text" name="" id="smps-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="smps-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>Cabinet</label> </td>
+            <td><input type="text" name="" id="cabinet-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="cabinet-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>Monitor</label> </td>
+            <td><input type="text" name="" id="monitor-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="monitor-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td> <label>Mouse & Keyboard</label> </td>
+            <td><input type="text" name="" id="mousekey-input" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="mousekey-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+        </tr>
+        <tr>
+            <td align="center"><button id="reset" class="btn btn-warning"
+                onclick="reset_form()">Reset</button></td>
+            <td align="center" colspan="2"><button id="submit" class="btn btn-primary"
+                onclick="submit_data()">Submit</button></td>
+        </tr>
+    </table>
+
+    <!-- Modal HTML embedded directly into document -->
+    <div id="ex1" class="modal" style="height: auto;">
+        <div id="qr-scanner" ></div><br>
+        <!-- <a href="#" rel="modal:close" class="btn btn-danger">Close</a> -->
+    </div>
+    
+</body>
+<script>
+
+    var target_element;
+
+    function sendData(url, method, data=null) {
+        console.log(url);
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 201) { 
+                Swal.fire(
+                    'Success!',
+                    'Data Added!',
+                    'success'
+                );
+            }
+            else{
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'Error!',
+                    confirmButtonColor: "#0275d8"
+                });
+            }
+
+        };
+        xhr.send(data);
+    }
+
+    function submit_data(){
+        data = {
+            "cpu"           :   $("#cpu-input").val(),
+            "motherboard"   :   $("#mobo-input").val(),
+            "ram"           :   $("#ram-input").val(),
+            "hdd"           :   $("#hdd-input").val(),
+            "smps"          :   $("#smps-input").val(),
+            "cabinet"       :   $("#cabinet-input").val(),
+            "monitor"       :   $("#monitor-input").val(),
+            "mousekey"      :   $("#mousekey-input").val()
+        }
+
+        sendData("add_data", "POST", JSON.stringify(data))
+    }
+
+    function reset_form(){
+        $("[data-identifer='qrcode-input']").each(
+            function(){
+                $(this).val(null);
+            }
+        );
+    }
+
+    function scanCode(element){
+        $("#ex1").modal({
+            fadeDuration: 100,
+            fadeDelay: 0.60
+        });
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-scanner", 
+            { 
+                fps: 15, 
+                qrbox: 250 ,
+                experimentalFeatures: {
+                    useBarCodeDetectorIfSupported: true
+                },
+                rememberLastUsedCamera: true,
+                aspectRatio: 1.7777778
+            });
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // console.log(`Code scanned = ${decodedText}`, decodedResult);
+            console.log(`Code scanned = ${decodedText}`);
+            $(`#${element.getAttribute("data-input")}`).val(decodedText);
+
+            html5QrcodeScanner.clear();
+            $.modal.close();
+        }
+        
+        html5QrcodeScanner.render(onScanSuccess);
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,1 @@
+https://blog.minhazav.dev/research/html5-qrcode
