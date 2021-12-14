@@ -7,10 +7,10 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from pymongo import response
 
 DOMAIN = "localhost"
-DATABASE = "prlcts"
+DATABASE = "prlcims"
 COLLECTION = "inventory"
-# MONGOUSER   = os.environ["MONGOUSER"]
-# MONGOPASSWD = os.environ["MONGOPASSWD"]
+MONGOUSER   = os.environ["MONGOUSER"]
+MONGOPASSWD = os.environ["MONGOPASSWD"]
 
 app = Flask(__name__, template_folder='templates')
 
@@ -33,8 +33,8 @@ app.secret_key = "nothing"
 
 myclient = pymongo.MongoClient(
     "mongodb://{}:27017/".format(DOMAIN), 
-    # username = MONGOUSER,
-    # password = MONGOPASSWD
+    username = MONGOUSER,
+    password = MONGOPASSWD
     )
 
 mydb = myclient[DATABASE]
