@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Observers' Log</title>
+    
+    <link rel="stylesheet" href="static/styles/bootstrap.css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/all.min.css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/fontawesome.min.css"/>
+    <link rel="stylesheet" href="static/styles/jquery.datetimepicker.min.css"/>
+    <link rel="stylesheet" href="static/styles/jquery_multiselect.css"/>
+    
+
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/jquery.datetimepicker.full.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/sweetalert2@11.js"></script>
+    <script src="static/js/jquery_multiselect.js"></script>
+
+    <style>
+        html,
+        body {
+            background-image: url("static/img/background3.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        .my_table {
+            border-radius: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 20px;
+            /* background: linear-gradient(to right, rgb(255, 255, 255), rgba(202, 195, 195, 0)); */
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        select {
+            border-radius: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        #obj_name,#observer_name,#stime,#etime,#comments{
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body onload="updateTime(); setInterval('updateTime()', 1000 )">
+    <h1 style="color: aliceblue; margin: 20px;">Observers' Log</h1>
+    <table class="my_table">
+        <tr>
+        {% block content %}
+        <td >
+            <h3><span class="text-primary">{{ current_user.username[0]|upper}}{{ current_user.username[1:]}}</span></h3>
+        </td>
+        <td align="right">
+            <button class="btn btn-danger" onclick="signout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+        </tr>
+            
+        </td>
+        {% endblock %}
+      </tr>
+        <tr>
+            <td><label>Instrument</label></td>
+            <td>
+                <select id="instrument" class="browser-default custom-select">
+                    <option value="PARAS">PARAS</option>
+                    <option value="NICS">NICS</option>
+                    <option value="NICSPol">NICSPol</option>
+                    <option value="MFOSC-P">MFOSC-P</option>
+                    <option value="CCD-2K">CCD-2K</option>
+                    <option value="EM-CCD">EM-CCD</option>
+                    <option value="EMPOL">EMPOL</option>
+                    <option value="LISA">LISA</option>
+                    <option value="REMARK">REMARK</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td ><label for="obj_name">Object Name</label></td>
+            <td name="field"><input type="text" id="obj_name" /></td>
+        </tr>
+        <tr>
+            <td><label for="observer">Observer</label></td>
+            <td name="field"><input type="text" id="observer_name" /></td>
+        </tr>
+        <tr>
+            <td><label for="observing_mode">Observing Mode</label></td>
+            <td name="field">
+                <select id="observing_mode"     multiple >
+                <!-- <select id="observing_mode" class="browser-default custom-select"> -->
+                    <option value="spectroscopy">spectroscopy</option>
+                    <option value="photometry">photometry</option>
+                    <option value="polarimetry">polarimetry</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div><label>Sky Condition</label></div>
+            </td>
+            <td>
+                <select id="sky" class="browser-default custom-select">
+                    <option value="good">good</option>
+                    <option value="hazy">hazy</option>
+                    <option value="cloudy">cloudy</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Comments</label>
+            <td><textarea style="resize:none" id="comments" cols="23" rows="2"></textarea></td>
+            </td>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Start DateTime <span style="color:#FF0000">(UTC)</span>:</label></td>
+            <td name="field">
+                <input id="stime" class="datetime">
+            </td>
+        </tr>
+        <tr>
+            <td><label>End DateTime <span style="color:#FF0000">(UTC)</span>:</label></td>
+            <td name="field">
+                <input id="etime" class="datetime">
+            </td>
+
+        </tr>
+        <tr>
+            <!-- <td><input type="date" id="datePicker"></td> -->
+            <td align="center">
+                <button class="btn btn-success" onclick="function func(){window.location.assign('/view')};func();">View
+                    Log</button>
+            </td>
+            <td align="center">
+                <button id="submit" class="btn btn-primary" onclick="submit_data()">
+                    Submit
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        function signout() {
+            window.location.replace('/logout');
+        }
+
+        var date = new Date;
+        var dd = String(date.getUTCDate()).padStart(2, '0');
+        var mm = String(date.getUTCMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getUTCFullYear();
+
+        current_date = yyyy + '-' + mm + '-' + dd;
+
+        var start_time = ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2);
+        date.setMinutes(date.getMinutes() + 30);
+        var end_time = ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2);
+        date = date.getUTCFullYear() + "-" + ("0" + (date.getUTCMonth() + 1)).slice(-2) + "-" + ("0" + date.getUTCDate()).slice(-2);
+        document.getElementById('stime').value = current_date + " " + start_time;
+        document.getElementById('etime').value = current_date + " " + end_time;
+
+        $('#observing_mode').multiSelect();
+
+        function updateTime() {
+            $(".datetime").datetimepicker({
+                step: 1,
+                format: 'Y-m-d H:i',
+            });
+        }
+
+        function submit_data() {
+            $("[name='field'").removeAttr("bgcolor");
+
+            if (validatefilledIn()) {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Please Fill the Highlighted Fields!',
+                    confirmButtonColor: "#0275d8"
+                });
+                return;
+            }
+
+            // Sending and receiving data in JSON format using POST method
+            var xhr = new XMLHttpRequest();
+            var url = "/add";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    // alert(json.msg);
+                    
+                    if(json.msg == "Under Maintenance!")
+                    {
+                        Swal.fire({
+                            icon: 'warning',
+                            text: json.msg,
+                            confirmButtonColor: "#0275d8"
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            icon: 'success',
+                            text: json.msg,
+                            confirmButtonColor: "#0275d8"
+                        });
+                    }
+                }
+                
+            };
+            var details = {
+                "instrument": document.getElementById("instrument").value,
+                "object_name": document.getElementById("obj_name").value,
+                "observer": document.getElementById("observer_name").value,
+                "observing_mode": $("#observing_mode").val().join(", "),
+                "sky_condition": document.getElementById("sky").value,
+                "start_time": document.getElementById("stime").value,
+                "end_time": document.getElementById("etime").value,
+                "comments": document.getElementById("comments").value,
+                "username": $(".text-primary").html(),
+            };
+            console.log(details);
+            var data = JSON.stringify(details);
+
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    xhr.send(data);
+                }
+            })
+        }
+
+        function validatefilledIn() {
+            flag = false;
+            $("[name='field'").each(function(){
+                console.log($(this).children().val());
+                if ( $(this).children().val() == "" || !isNaN($(this).children().val()) ){
+                    flag = true;
+                    $(this).attr("bgcolor","red");
+                }
+            });
+            return flag;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRL CIMS</title>
+
+    <link rel="stylesheet" href="static/styles/bootstrap.css" id="bootstrap-css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/all.min.css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/fontawesome.min.css"/>
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+
+    <script>
+        function logout() {
+            window.location.replace('/logout');
+        }
+    </script>
+    <style>
+        body{
+            background-image: url("static/img/background.png");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+        #formContent {
+            -webkit-border-radius: 10px 10px 10px 10px;
+            border-radius: 10px 10px 10px 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            padding: 0px;
+            -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+            box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex justify-content-center">
+        <div id="formContent">
+            <form action="/login" method="POST" novalidate>
+                {% block content %}
+                <p class="h4 mb-4 text-center">Sign in</p>
+                {{ form.hidden_tag() }}
+                <p>
+
+                    <p>
+                        {{ form.username.label }}<br>
+                        {{ form.username(size=32) }}
+                    </p>
+
+                    <p>
+                        {{ form.password.label }}<br>
+                        {{ form.password(size=32) }}
+                    </p>
+
+                    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+                    <p>{{ form.submit() }}
+                    </p>
+                    {% endblock %}
+                </form>
+            </div>
+        </div>
+    </body>
+    <script>
+        $("#submit").addClass("btn btn-primary");
+    </script>
+
+</html>
