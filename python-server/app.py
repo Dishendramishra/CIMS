@@ -6,11 +6,12 @@ import os
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from pymongo import response
 
-DOMAIN = "localhost"
-DATABASE = "prlcims"
-COLLECTION = "inventory"
-MONGOUSER   = os.environ["MONGOUSER"]
-MONGOPASSWD = os.environ["MONGOPASSWD"]
+CIMS_DOMAIN      = os.environ["CIMS_DOMAIN"]
+CIMS_DATABASE    = os.environ["CIMS_DATABASE"]
+CIMS_COLLECTION  = os.environ["CIMS_COLLECTION"]
+CIMS_MONGOUSER   = os.environ["CIMS_MONGOUSER"]
+CIMS_MONGOPASSWD = os.environ["CIMS_MONGOPASSWD"]
+FLASK_SEC_KEY    = os.environ["FLASK_SEC_KEY"]
 
 app = Flask(__name__, template_folder='templates')
 
@@ -18,11 +19,11 @@ app = Flask(__name__, template_folder='templates')
 #                           MongoDB Setup
 # ==================================================================
 app.config['MONGODB_SETTINGS'] = {
-    'db'  : DATABASE,
-    'host': 'localhost', #os.environ["MONGOIP"],
+    'db'  : CIMS_DATABASE,
+    'host': FLASK_SEC_KEY,
     'port': 27017,
 }
-app.secret_key = "nothing"
+app.secret_key = FLASK_SEC_KEY
 
 # db = MongoEngine()
 # db.init_app(app)
@@ -32,14 +33,21 @@ app.secret_key = "nothing"
 #     key = db.StringField()
 
 myclient = pymongo.MongoClient(
-    "mongodb://{}:27017/".format(DOMAIN), 
-    username = MONGOUSER,
-    password = MONGOPASSWD
-    )
+    "mongodb://{}:27017/".format(CIMS_DOMAIN), 
+    username = CIMS_MONGOUSER,
+    password = CIMS_MONGOPASSWD
+)
 
-mydb = myclient[DATABASE]
-mycoll = mydb[COLLECTION]
+mydb = myclient[CIMS_DATABASE]
+mycoll = mydb[CIMS_COLLECTION]
 # ==================================================================
+
+@app.route('/favicon')
+@app.route('/favicon.ico')
+def favicon():
+    print(os.path.join(app.root_path, 'static/img'))
+    return send_from_directory(os.path.join(app.root_path, 'static/img'),
+                               'prl.png', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/', methods=['GET',"POST"])
 def home():
@@ -61,10 +69,8 @@ def add_data():
         return status_code
 
 if __name__ == '__main__':
-    # app.run(debug=True)
     app.run(
         host="0.0.0.0",
         port=443,
-        debug=True,
         ssl_context=('cert.pem', 'key.pem')
     ) 
