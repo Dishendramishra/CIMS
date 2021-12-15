@@ -84,17 +84,15 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        cprint("r",form.username.data)
-        cprint("r",form.password.data)
+        # cprint("r",form.username.data)
+        # cprint("r",form.password.data)
         
         user = User.objects(username=form.username.data,password=form.password.data).first()
-        cprint("r",user)
 
         if user is None:# or not user.check_password(form.password.data):
             return redirect(url_for('login'))
         
         login_user(user,remember=form.remember_me.data)
-        cprint("r",form.remember_me.data)
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
