@@ -159,7 +159,8 @@
             "smps"          :   $("#smps-input").val(),
             "cabinet"       :   $("#cabinet-input").val(),
             "monitor"       :   $("#monitor-input").val(),
-            "mousekey"      :   $("#mousekey-input").val()
+            "mousekey"      :   $("#mousekey-input").val(),
+            "deo"           :   "{{current_user.username}}",  // getting username from flask
         }
 
         sendData("add_data", "POST", JSON.stringify(data))
