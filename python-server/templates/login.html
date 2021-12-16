@@ -40,6 +40,7 @@
 </head>
 
 <body>
+    <h1 class="text-white p-2">PRL CIMS</h1>
     <div class="d-flex justify-content-center">
         <div id="formContent">
             <form action="/login" method="POST" novalidate>
@@ -50,12 +51,12 @@
 
                     <p>
                         {{ form.username.label }}<br>
-                        {{ form.username(size=32) }}
+                        {{ form.username() }}
                     </p>
 
                     <p>
                         {{ form.password.label }}<br>
-                        {{ form.password(size=32) }}
+                        {{ form.password() }}
                     </p>
 
                     <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
