@@ -115,7 +115,18 @@ def logout():
 @app.route('/add_data', methods=["POST"])
 def add_data():
     record = request.json
-    print(record)    
+    print(record)
+
+    result = {}
+
+    for key in record.keys():
+        if not record[key].strip():
+            result[key] = "Empty"
+
+    if bool(result):
+        result["msg"] = "Fill the Red Highlighted Fields!"
+        return jsonify(result), 400
+
     try:
         mycoll.insert_one(record)
         status_code = Response(status=201)
@@ -131,5 +142,6 @@ if __name__ == '__main__':
     app.run(
         host="0.0.0.0",
         port=443,
+        debug=True,
         ssl_context=('cert.pem', 'key.pem')
     ) 

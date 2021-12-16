@@ -51,8 +51,8 @@
 </head>
 
 <body>
-    <h1 style="color: white; margin: 30px;   text-shadow: 2px 2px #4576fd">PRL CIMS</h1>
-    
+    <h1 class="text-white p-2">PRL CIMS</h1>
+
     <table class="table_layout" id="items-table">
         <tr>
             {% block content %}
@@ -66,49 +66,49 @@
         </tr>
         <tr>
             <td><label>CPU</label></td>
-            <td><input type="text" name="" id="cpu-input" data-identifer="qrcode-input"></td>
-            <td><button onclick="scanCode(this)" id='cpu-btn' class="scan-qr-btn" data-input="cpu-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" id='cpu-btn' class="scan-qr-btn" data-input="cpu"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>Motherboard</label> </td>
-            <td><input type="text" name="" id="mobo-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="mobo-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="motherboard" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="motherboard"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>RAM</label> </td>
-            <td><input type="text" name="" id="ram-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="ram-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="ram" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="ram"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>HARD DISK</label> </td>
-            <td><input type="text" name="" id="hdd-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="hdd-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="hdd" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="hdd"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>SMPS</label> </td>
-            <td><input type="text" name="" id="smps-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="smps-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="smps" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="smps"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>Cabinet</label> </td>
-            <td><input type="text" name="" id="cabinet-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="cabinet-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="cabinet" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="cabinet"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>Monitor</label> </td>
-            <td><input type="text" name="" id="monitor-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="monitor-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="monitor" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="monitor"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td> <label>Mouse & Keyboard</label> </td>
-            <td><input type="text" name="" id="mousekey-input" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="mousekey-input"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
+            <td><input type="text" name="" id="mousekey" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn" data-input="mousekey"><img src="static/img/camera.png" alt="" width="32" height="32"></button></td>
         </tr>
         <tr>
             <td align="center"><button id="reset" class="btn btn-warning"
-                onclick="reset_form()">Reset</button></td>
-            <td align="center" colspan="2"><button id="submit" class="btn btn-primary"
-                onclick="submit_data()">Submit</button></td>
+                onclick="reset_form()"><i class="fa fa-times" aria-hidden="true"></i> Reset</button></td>
+            <td align="center" colspan="2"><button id="submit" class="btn btn-success"
+                onclick="submit_data()"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button></td>
         </tr>
     </table>
 
@@ -125,7 +125,6 @@
     }
 
     function sendData(url, method, data=null) {
-        console.log(url);
         var xhr = new XMLHttpRequest();
         xhr.open(method, url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -138,38 +137,60 @@
                     'success'
                 );
             }
-            else{
+            else if (xhr.readyState === 4 && xhr.status === 400)
+            {
+                var json = JSON.parse(xhr.responseText);
+                console.log(json);
+                
+                $.each(json, function(i, item){
+                    $(`#${i}`).css("border-color","red");
+                });
+            
+
                 Swal.fire({
-                    icon: 'warning',
-                    text: 'Error!',
+                    icon: 'error',
+                    text: json["msg"],
                     confirmButtonColor: "#0275d8"
                 });
             }
 
         };
+        
         xhr.send(data);
     }
 
     function submit_data(){
+
+        reset_input_color();
+        
         data = {
-            "cpu"           :   $("#cpu-input").val(),
-            "motherboard"   :   $("#mobo-input").val(),
-            "ram"           :   $("#ram-input").val(),
-            "hdd"           :   $("#hdd-input").val(),
-            "smps"          :   $("#smps-input").val(),
-            "cabinet"       :   $("#cabinet-input").val(),
-            "monitor"       :   $("#monitor-input").val(),
-            "mousekey"      :   $("#mousekey-input").val(),
+            "cpu"           :   $("#cpu").val(),
+            "motherboard"   :   $("#motherboard").val(),
+            "ram"           :   $("#ram").val(),
+            "hdd"           :   $("#hdd").val(),
+            "smps"          :   $("#smps").val(),
+            "cabinet"       :   $("#cabinet").val(),
+            "monitor"       :   $("#monitor").val(),
+            "mousekey"      :   $("#mousekey").val(),
             "deo"           :   "{{current_user.username}}",  // getting username from flask
         }
 
-        sendData("add_data", "POST", JSON.stringify(data))
+        sendData("/add_data", "POST", JSON.stringify(data))
+    }
+
+    function reset_input_color(){
+        $("[data-identifer='qrcode-input']").each(
+            function(){
+                $(this).css("border-color","");
+            }
+        );
     }
 
     function reset_form(){
         $("[data-identifer='qrcode-input']").each(
             function(){
                 $(this).val(null);
+                $(this).css("border-color","");
             }
         );
     }
