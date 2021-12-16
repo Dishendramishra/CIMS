@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRL CTS</title>
+    <meta name="viewport" content="width=device-width">
+    <title>PRL CIMS</title>
     
     
     <link rel="stylesheet" href="static/styles/bootstrap.css"/>
@@ -35,7 +35,10 @@
         }
 
         td {
-            padding: 12px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 7px;
+            padding-bottom: 7px;
         }
 
         input,
@@ -65,6 +68,16 @@
             {% endblock %}
         </tr>
         <tr>
+            <td><label>Custodian Pay Roll</label></td>
+            <td><input type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="custodian"></button></td>
+        </tr>
+        <tr>
+            <td><label>PO No.</label></td>
+            <td><input type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="po-number"></button></td>
+        </tr>
+        <tr>
             <td><label>CPU</label></td>
             <td><input type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cpu"></button></td>
@@ -80,9 +93,14 @@
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ram"></button></td>
         </tr>
         <tr>
-            <td> <label>HARD DISK</label> </td>
+            <td> <label>HDD</label> </td>
             <td><input type="text" name="" id="hdd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="hdd"></button></td>
+        </tr>
+        <tr>
+            <td> <label>SSD</label> </td>
+            <td><input type="text" name="" id="ssd" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ssd"></button></td>
         </tr>
         <tr>
             <td> <label>SMPS</label> </td>
@@ -164,10 +182,13 @@
         reset_input_color();
         
         data = {
+            "custodian"     :   $("#custodian").val(),
+            "po-number"     :   $("#po-number").val(),
             "cpu"           :   $("#cpu").val(),
             "motherboard"   :   $("#motherboard").val(),
             "ram"           :   $("#ram").val(),
             "hdd"           :   $("#hdd").val(),
+            "ssd"           :   $("#ssd").val(),
             "smps"          :   $("#smps").val(),
             "cabinet"       :   $("#cabinet").val(),
             "monitor"       :   $("#monitor").val(),
