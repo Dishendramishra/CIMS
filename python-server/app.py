@@ -7,6 +7,7 @@ import os
 from form import LoginForm
 from werkzeug.urls import url_parse
 import re
+from datetime import datetime
 
 from colorama import init, Fore, Back, Style
 init()
@@ -155,6 +156,9 @@ def add_data():
         result["msg"] = "PO Number is Not in Correct Format!"
         return jsonify(result), 400
     #==================================================================
+
+    primary_key = datetime.now().strftime("%Y%m%d%f")
+    record["_id"] = primary_key
 
     try:
         mycoll.insert_one(record)
