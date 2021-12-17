@@ -6,8 +6,11 @@ import pymongo
 import os
 from form import LoginForm
 from werkzeug.urls import url_parse
+import re
+
 from colorama import init, Fore, Back, Style
 init()
+
 
 def cprint(color,obj):
     colors = {"r": Fore.RED,
@@ -126,6 +129,32 @@ def add_data():
     if bool(result):
         result["msg"] = "Fill the Red Highlighted Fields!"
         return jsonify(result), 400
+
+    #================================================================== 
+    #  Regex Pay Roll Check
+    #================================================================== 
+    payroll = re.compile("^PR\d{5}")
+    
+    record["custodian"] = record["custodian"].upper()
+
+    if not bool(payroll.match(record["custodian"])):
+        result["custodian"] = "Empty"
+        result["msg"] = "Pay Roll Number is Not in Correct Format!"
+        return jsonify(result), 400
+    #==================================================================
+
+    #================================================================== 
+    #  Regex PO Number Check
+    #================================================================== 
+    ponumber = re.compile("^PRAA\d{14}|PRAA\d{4}E\d{9}")
+
+    record["po-number"] = record["po-number"].upper()
+    
+    if not bool(ponumber.match(record["po-number"])):
+        result["po-number"] = "Empty"
+        result["msg"] = "PO Number is Not in Correct Format!"
+        return jsonify(result), 400
+    #==================================================================
 
     try:
         mycoll.insert_one(record)
