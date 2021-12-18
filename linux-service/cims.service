@@ -1,0 +1,20 @@
+[Unit]
+Description="CIMS"
+[Service]
+User=root
+# The configuration file application.properties should be here:
+
+#change this to your workspace
+WorkingDirectory=/home/root/CIMS/python-server
+
+#path to executable. 
+#executable is a shell script
+ExecStart= /usr/bin/sudo /home/root/CIMS/python-server/linux-service/cims
+
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
