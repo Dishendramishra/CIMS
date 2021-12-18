@@ -5,11 +5,11 @@ User=root
 # The configuration file application.properties should be here:
 
 #change this to your workspace
-WorkingDirectory=/home/root/CIMS/python-server
+WorkingDirectory=/root/CIMS/python-server
 
 #path to executable. 
 #executable is a shell script
-ExecStart= /usr/bin/sudo /home/root/CIMS/python-server/linux-service/cims
+ExecStart= /usr/bin/sudo /root/CIMS/python-server/linux-service/cims
 
 SuccessExitStatus=143
 TimeoutStopSec=10

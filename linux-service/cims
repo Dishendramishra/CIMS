@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/python3 /home/root/CIMS/python-server/app.py
+/usr/bin/python3 /root/CIMS/python-server/app.py

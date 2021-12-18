@@ -36,3 +36,38 @@ security:
 ```
 
 then restart `mongod`.
+
+
+
+## Creating Service
+
+Copy file `cims.service` under `python-server/linux-service` to `/etc/systemd/system/`
+
+```
+sudo cp ./python-server/linux-service/cims.service /etc/systemd/system/cims.service 
+```
+
+Now give executable permissions to `cims` under `python-server/linux-service`
+
+```
+sudo chmod u+x ./linux-service/cims
+```
+
+
+
+### Starting the Service
+
+```
+sudo systemctl daemon-reload
+sudo systemctl enable olb.service
+sudo systemctl start olb
+sudo systemctl status olb
+```
+
+
+
+### Checking logs
+
+```
+sudo journalctl -f --unit=olb 
+```
