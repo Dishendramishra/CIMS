@@ -18,6 +18,7 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="static/js/sweetalert2@11.js"></script>
     <script src="static/js/jquery.modal.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
 
     <style>
         html,
@@ -69,14 +70,26 @@
         </tr>
         <tr>
             <td><label>Custodian Pay Roll</label></td>
-            <td><input style="text-transform: uppercase" type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
+            <td><input  oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="custodian"></button></td>
         </tr>
+            <td colspan="3">
+                <div class="alert alert-danger collapse" role="alert" id="custodian-alert">
+                    <p class="text-center">Invalid Pay Roll Number !</p>
+                </div>
+            </td>
         <tr>
             <td><label>PO No.</label></td>
-            <td><input style="text-transform: uppercase" type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
+            <td><input oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="po-number"></button></td>
         </tr>
+        </tr>
+            <td colspan="3">
+                <div class="alert alert-danger collapse" role="alert" id="po-alert">
+                    <p class="text-center">Invalid PO Number !</p>
+                </div>
+            </td>
+        <tr>
         <tr>
             <td><label>CPU</label></td>
             <td><input type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
@@ -138,6 +151,31 @@
     
 </body>
 <script>
+    function validateCustodian(element){
+        pattern = /^PR\d{5}$/i
+        if (pattern.test(element.value)){
+            $("#custodian-alert").hide();
+             $("#submit").removeAttr("disabled");
+        }
+        else{
+            $("#custodian-alert").show();   
+            $("#submit").attr("disabled", true);
+        }
+    }
+
+
+    function validatePONumber(element){
+        pattern = /^PRAA\d{14}$|PRAA\d{4}E\d{9}$/i
+        if (pattern.test(element.value)){
+            $("#po-alert").hide();
+             $("#submit").removeAttr("disabled");
+        }
+        else{
+            $("#po-alert").show();
+            $("#submit").attr("disabled", true);
+        }
+    }
+
     function signout() {
             window.location.replace('/logout');
     }
