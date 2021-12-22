@@ -2,6 +2,7 @@ from typing import Collection
 from flask import *
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from flask_mongoengine import MongoEngine
+from flask_qrcode import QRcode
 import pymongo
 import os
 from form import LoginForm
@@ -11,7 +12,6 @@ from datetime import datetime
 
 from colorama import init, Fore, Back, Style
 init()
-
 
 def cprint(color,obj):
     colors = {"r": Fore.RED,
@@ -33,6 +33,7 @@ CIMS_MONGOIP     = os.environ["CIMS_MONGOIP"]
 FLASK_SEC_KEY    = os.environ["FLASK_SEC_KEY"]
 
 app = Flask(__name__, template_folder='templates')
+qrcode = QRcode(app)
 
 # ==================================================================
 #                           MongoDB Setup
@@ -162,8 +163,8 @@ def add_data():
 
     try:
         mycoll.insert_one(record)
-        status_code = Response(status=201)
-        return status_code
+        # status_code = Response(status=201)
+        return render_template("qrcode.html")
 
     except Exception as e:
         # print("Error occured !")

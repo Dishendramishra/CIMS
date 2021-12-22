@@ -18,6 +18,7 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="static/js/sweetalert2@11.js"></script>
     <script src="static/js/jquery.modal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js" integrity="sha512-WiGQZv8WpmQVRUFXZywo7pHIO0G/o3RyiAJZj8YXNN4AV7ReR1RYWVmZJ6y3H06blPcjJmG/sBpOVZjTSFFlzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         html,
@@ -150,6 +151,15 @@
     
 </body>
 <script>
+    function SaveAsFile(t,f,m) {
+        try {
+            var b = new Blob([t],{type:m});
+            saveAs(b, f);
+        } catch (e) {
+            window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
+        }
+    }
+
     function validateCustodian(element){
         pattern = /^PR\d{5}$/i
         if (pattern.test(element.value)){
@@ -185,12 +195,15 @@
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 201) { 
-                Swal.fire(
-                    'Success!',
-                    'Data Added!',
-                    'success'
-                );
+            if (xhr.readyState === 4 && xhr.status === 200) { 
+                Swal.fire({
+                    icon: 'success',
+                    html : xhr.response,
+                    title: 'Asset Id Generated!',
+                }).then(function(){
+                    download(document.getElementById("qrcode").src, "qrcode.png", "img/png");
+                });
+                
             }
             else if (xhr.readyState === 4 && xhr.status === 400)
             {
