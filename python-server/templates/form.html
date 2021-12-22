@@ -18,7 +18,7 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="static/js/sweetalert2@11.js"></script>
     <script src="static/js/jquery.modal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js" integrity="sha512-WiGQZv8WpmQVRUFXZywo7pHIO0G/o3RyiAJZj8YXNN4AV7ReR1RYWVmZJ6y3H06blPcjJmG/sBpOVZjTSFFlzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="static/js/download.min.js"></script>
 
     <style>
         html,
@@ -151,15 +151,6 @@
     
 </body>
 <script>
-    function SaveAsFile(t,f,m) {
-        try {
-            var b = new Blob([t],{type:m});
-            saveAs(b, f);
-        } catch (e) {
-            window.open("data:"+m+"," + encodeURIComponent(t), '_blank','');
-        }
-    }
-
     function validateCustodian(element){
         pattern = /^PR\d{5}$/i
         if (pattern.test(element.value)){

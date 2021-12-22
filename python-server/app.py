@@ -164,7 +164,7 @@ def add_data():
     try:
         mycoll.insert_one(record)
         # status_code = Response(status=201)
-        return render_template("qrcode.html")
+        return render_template("qrcode.html", primary_key=primary_key)
 
     except Exception as e:
         # print("Error occured !")
