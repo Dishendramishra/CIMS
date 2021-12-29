@@ -1,0 +1,76 @@
+db.ram.insertMany([
+    { "brand" : "Corsair"},
+    { "brand" : "Kingston"},
+    { "brand" : "G.SKILL"},
+    { "brand" : "Transcend"},
+    { "brand" : "Samsung"},
+    { "brand" : "ADATA"},
+    { "brand" : "Crucial"},
+])
+,
+db.motherboard.insertMany([
+    { "brand" : "ASUS"},
+    { "brand" : "ASRock"},
+    { "brand" : "MSI"},
+    { "brand" : "Gigabyte"}
+])
+,
+db.smps.insertMany([
+    { "brand" : "Corsair"},
+    { "brand" : "Cooler Master"},
+    { "brand" : "Zebronics"},
+    { "brand" : "Intex"},
+    { "brand" : "Gigabyte"},
+    { "brand" : "iBall"}
+])
+,
+db.mousekey.insertMany([
+    { "brand" : "Dell"},
+    { "brand" : "Lenovo"},
+    { "brand" : "Logitech"},
+    { "brand" : "HP"},
+    { "brand" : "iBall"},
+    { "brand" : "Intex"},
+    { "brand" : "QHMPL"}
+])
+,
+db.monitor.insertMany([
+    {"brand" : "Acer"},
+    {"brand" : "Alienware"},
+    {"brand" : "AOC"},
+    {"brand" : "Asus"},
+    {"brand" : "BenQ"},
+    {"brand" : "LG"},
+    {"brand" : "HP"},
+    {"brand" : "NEC"},
+    {"brand" : "Dell"},
+    {"brand" : "Lenovo"},
+    {"brand" : "Samsung"},
+    {"brand" : "ViewSonic"}
+])
+,
+db.cpu.insertMany([
+    {"brand" : "Ryzen 5600g"},
+    {"brand" : "Ryzen 5700g"},
+])
+,
+db.harddisk.insertMany([
+    {"brand" : "Crucial"},
+    {"brand" : "Seagate"},
+    {"brand" : "WD"},
+    {"brand" : "Gigabyte"},
+    {"brand" : "Toshiba"},
+    {"brand" : "Samsung"},
+    {"brand" : "Kingston"},
+])
+,
+db.cabinet.insertMany([
+    {"brand" : "Ant esports"},
+    {"brand" : "Antec"},
+    {"brand" : "ASUS"},
+    {"brand" : "Circle"},
+    {"brand" : "Cooler Master"},
+    {"brand" : "Corsair"},
+    {"brand" : "Deepcool"},
+    {"brand" : "Fractal Design"}
+])

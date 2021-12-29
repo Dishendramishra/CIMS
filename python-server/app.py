@@ -110,7 +110,32 @@ def login():
 
 @app.route('/form', methods=['GET',"POST"])
 def form():
-    return render_template("form.html")
+
+    try:
+        # cpu_list = list(mydb['ram'].find({},{"brand":True, "_id": False}))
+        cpu_list         = sorted(list(mydb['cpu'].distinct("brand")))
+        ram_list         = sorted(list(mydb['ram'].distinct("brand")))
+        motherboard_list = sorted(list(mydb['motherboard'].distinct("brand")))
+        harddisk_list    = sorted(list(mydb['harddisk'].distinct("brand")))
+        smps_list        = sorted(list(mydb['smps'].distinct("brand")))
+        cabinet_list     = sorted(list(mydb['cabinet'].distinct("brand")))
+        monitor_list     = sorted(list(mydb['monitor'].distinct("brand")))
+        mousekey_list    = sorted(list(mydb['mousekey'].distinct("brand")))
+
+    except Exception as e:
+        status_code = Response(status=400)
+        return status_code
+
+    return render_template("form.html", 
+                            cpu_list = cpu_list,
+                            ram_list = ram_list,
+                            motherboard_list = motherboard_list,
+                            harddisk_list = harddisk_list,
+                            smps_list = smps_list,
+                            cabinet_list = cabinet_list,
+                            monitor_list = monitor_list,
+                            mousekey_list = mousekey_list
+                            )
 
 @app.route('/logout')
 def logout():
@@ -125,7 +150,9 @@ def add_data():
     result = {}
 
     for key in record.keys():
-        if not record[key].strip():
+        if isinstance(record[key], list) and not record[key][1].strip():
+            result[key] = "Empty"
+        elif isinstance(record[key], str) and not record[key].strip():
             result[key] = "Empty"
 
     if bool(result):

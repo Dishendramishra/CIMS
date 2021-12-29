@@ -60,7 +60,7 @@
     <table class="table_layout" id="items-table">
         <tr>
             {% block content %}
-            <td >
+            <td colspan="2">
                 <h3><span class="text-primary"><i class="fa fa-user" aria-hidden="true"></i> {{ current_user.username[0]|upper}}{{ current_user.username[1:]}}</span></h3>
             </td>
             <td align="right" colspan="2">
@@ -70,7 +70,7 @@
         </tr>
         <tr>
             <td><label>Custodian Pay Roll</label></td>
-            <td><input  oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
+            <td colspan="2"><input  oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="custodian"></button></td>
         </tr>
             <td colspan="3">
@@ -80,7 +80,7 @@
             </td>
         <tr>
             <td><label>PO No.</label></td>
-            <td><input oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
+            <td colspan="2"><input oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="po-number"></button></td>
         </tr>
         </tr>
@@ -92,51 +92,114 @@
         <tr>
         <tr>
             <td><label>CPU</label></td>
+            <td>
+                <select id="cpu_list">
+                    {% for cpu in  cpu_list %}
+                    <option value="{{ cpu }}">{{ cpu }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cpu"></button></td>
         </tr>
         <tr>
             <td> <label>Motherboard</label> </td>
+            <td>
+                <select id="motherboard_list">
+                    {% for motherboard in  motherboard_list %}
+                    <option value="{{ motherboard }}">{{ motherboard }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="motherboard" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="motherboard"></button></td>
         </tr>
         <tr>
             <td> <label>RAM</label> </td>
+            <td>
+                <select id="ram_list">
+                    {% for ram in  ram_list %}
+                    <option value="{{ ram }}">{{ ram }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="ram" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ram"></button></td>
         </tr>
         <tr>
             <td> <label>HDD</label> </td>
+            <td>
+                <select id="harddisk_list">
+                    {% for harddisk in  harddisk_list %}
+                    <option value="{{ harddisk }}">{{ harddisk }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="hdd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="hdd"></button></td>
         </tr>
         <tr>
             <td> <label>SSD</label> </td>
+            <td>
+                <select id="harddisk_list">
+                    {% for harddisk in  harddisk_list %}
+                    <option value="{{ harddisk }}">{{ harddisk }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="ssd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ssd"></button></td>
         </tr>
         <tr>
             <td> <label>SMPS</label> </td>
+            <td>
+                <select id="smps_list">
+                    {% for smps in  smps_list %}
+                    <option value="{{ smps }}">{{ smps }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="smps" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="smps"></button></td>
         </tr>
         <tr>
             <td> <label>Cabinet</label> </td>
+            <td>
+                <select id="cabinet_list">
+                    {% for cabinet in  cabinet_list %}
+                    <option value="{{ cabinet }}">{{ cabinet }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="cabinet" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cabinet"></button></td>
         </tr>
         <tr>
             <td> <label>Monitor</label> </td>
+            <td>
+                <select id="monitor_list">
+                    {% for monitor in  monitor_list %}
+                    <option value="{{ monitor }}">{{ monitor }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="monitor" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="monitor"></button></td>
         </tr>
         <tr>
             <td> <label>Mouse & Keyboard</label> </td>
+            <td>
+                <select id="mousekey_list">
+                    {% for mousekey in  mousekey_list %}
+                    <option value="{{ mousekey }}">{{ mousekey }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="mousekey" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="mousekey"></button></td>
         </tr>
         <tr>
-            <td align="center"><button id="reset" class="btn btn-warning"
+            <td align="center" colspan="2"><button id="reset" class="btn btn-warning"
                 onclick="reset_form()"><i class="fa fa-times" aria-hidden="true"></i> Reset</button></td>
             <td align="center" colspan="2"><button id="submit" class="btn btn-success"
                 onclick="submit_data()"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button></td>
@@ -225,15 +288,15 @@
         data = {
             "custodian"     :   $("#custodian").val(),
             "po-number"     :   $("#po-number").val(),
-            "cpu"           :   $("#cpu").val(),
-            "motherboard"   :   $("#motherboard").val(),
-            "ram"           :   $("#ram").val(),
-            "hdd"           :   $("#hdd").val(),
-            "ssd"           :   $("#ssd").val(),
-            "smps"          :   $("#smps").val(),
-            "cabinet"       :   $("#cabinet").val(),
-            "monitor"       :   $("#monitor").val(),
-            "mousekey"      :   $("#mousekey").val(),
+            "cpu"           :   [ $("#cpu_list").val(),         $("#cpu").val() ],
+            "motherboard"   :   [ $("#motherboard_list").val(), $("#motherboard").val() ],
+            "ram"           :   [ $("#ram_list").val(),         $("#ram").val() ],
+            "hdd"           :   [ $("#harddisk_list").val(),    $("#hdd").val() ],
+            "ssd"           :   [ $("#harddisk_list").val(),    $("#ssd").val() ],
+            "smps"          :   [ $("#smps_list").val(),        $("#smps").val() ],
+            "cabinet"       :   [ $("#cabinet_list").val(),     $("#cabinet").val() ],
+            "monitor"       :   [ $("#monitor_list").val(),     $("#monitor").val() ],
+            "mousekey"      :   [ $("#mousekey_list").val(),    $("#mousekey").val() ],
             "deo"           :   "{{current_user.username}}",  // getting username from flask
         }
 
