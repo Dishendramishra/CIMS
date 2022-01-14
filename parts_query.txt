@@ -1,3 +1,15 @@
+db.ram.deleteMany({})
+db.motherboard.deleteMany({})
+db.smps.deleteMany({})
+db.mouse.deleteMany({})
+db.keyboard.deleteMany({})
+db.webcam.deleteMany({})
+db.speakers.deleteMany({})
+db.monitor.deleteMany({})
+db.cpu.deleteMany({})
+db.harddisk.deleteMany({})
+db.cabinet.deleteMany({})
+
 db.ram.insertMany([
     { "brand" : "Corsair"},
     { "brand" : "Kingston"},

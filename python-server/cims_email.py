@@ -19,7 +19,7 @@ def send_email(receivers, attach_file_name):
 
     #Setup the MIME
     message = MIMEMultipart()
-    message['From']     = CIMS_EMAIL+"@prl.res.in"
+    message['From']     = CIMS_EMAIL
     message['To']       = ", ".join(receivers)
     message['Cc']       = CIMS_EMAIL_CC
     message['Subject']  = 'CIMS Report'
@@ -36,7 +36,7 @@ def send_email(receivers, attach_file_name):
     
 
     try:
-        smtpObj = smtplib.SMTP(CIMS_EMAIL_SERVER)
+        smtpObj = smtplib.SMTP(CIMS_EMAIL_SERVER, CIMS_EMAIL_PORT)
         smtpObj.starttls()
         smtpObj.login( CIMS_EMAIL , CIMS_EMAIL_PASSWD)
         smtpObj.sendmail(CIMS_EMAIL, receivers, message)
