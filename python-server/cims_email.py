@@ -43,6 +43,3 @@ def send_email(receivers, attach_file_name):
         smtpObj.quit() 
     except Exception as e:
         print(e)
-
-if __name__ == "__main__":
-    send_email(["dishendra@prl.res.in"], "20220114340103.pdf")
