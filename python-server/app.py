@@ -1,17 +1,32 @@
-from typing import Collection
+# installed
+# ========================================
 from flask import *
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from flask_mongoengine import MongoEngine
 from flask_qrcode import QRcode
-import pymongo
-import os
-from form import LoginForm
 from werkzeug.urls import url_parse
-import re
-from datetime import datetime
+import pymongo
 
 from colorama import init, Fore, Back, Style
 init()
+# ========================================
+
+# built-in
+# ========================================
+import os
+import re
+from datetime import datetime
+from typing import Collection
+# ========================================
+
+# custom
+# ========================================
+from form import LoginForm
+from cims_report import *
+from cims_email import *
+# ========================================
+
+
 
 def cprint(color,obj):
     colors = {"r": Fore.RED,
@@ -171,10 +186,10 @@ def add_data():
     #================================================================== 
     payroll = re.compile("^PR\d{5}")
     
-    record["custodian"] = record["custodian"].upper()
+    record["custodian-payroll"] = record["custodian-payroll"].upper()
 
-    if not bool(payroll.match(record["custodian"])):
-        result["custodian"] = "Empty"
+    if not bool(payroll.match(record["custodian-payroll"])):
+        result["custodian-payroll"] = "Empty"
         result["msg"] = "Pay Roll Number is Not in Correct Format!"
         return jsonify(result), 400
     #==================================================================
@@ -184,11 +199,12 @@ def add_data():
     #================================================================== 
     ponumber = re.compile("^PRAA\d{14}|PRAA\d{4}E\d{9}")
 
-    record["po-number"] = record["po-number"].upper()
+    record["coins-po-number"] = record["coins-po-number"].upper()
+    record["gem-po-number"] = record["gem-po-number"].upper()
     
-    if not bool(ponumber.match(record["po-number"])):
-        result["po-number"] = "Empty"
-        result["msg"] = "PO Number is Not in Correct Format!"
+    if not bool(ponumber.match(record["coins-po-number"])):
+        result["coins-po-number"] = "Empty"
+        result["msg"] = "Coins PO Number is Not in Correct Format!"
         return jsonify(result), 400
     #==================================================================
 
@@ -198,6 +214,9 @@ def add_data():
     try:
         mycoll.insert_one(record)
         # status_code = Response(status=201)
+        record["pcdt-id"] = primary_key
+        generate_report(primary_key+".pdf", record)
+        send_email([record["custodian-email"]], primary_key+".pdf")
         return render_template("qrcode.html", primary_key=primary_key)
 
     except Exception as e:

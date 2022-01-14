@@ -24,7 +24,7 @@ db.smps.insertMany([
     { "brand" : "iBall"}
 ])
 ,
-db.mousekey.insertMany([
+db.mouse.insertMany([
     { "brand" : "Dell"},
     { "brand" : "Lenovo"},
     { "brand" : "Logitech"},
@@ -34,6 +34,38 @@ db.mousekey.insertMany([
     { "brand" : "QHMPL"}
 ])
 ,
+db.keyboard.insertMany([
+    { "brand" : "Dell"},
+    { "brand" : "Lenovo"},
+    { "brand" : "Logitech"},
+    { "brand" : "HP"},
+    { "brand" : "iBall"},
+    { "brand" : "Intex"},
+    { "brand" : "QHMPL"}
+])
+,
+db.webcam.insertMany([
+    { "brand" : "Dell"},
+    { "brand" : "Lenovo"},
+    { "brand" : "Logitech"},
+    { "brand" : "HP"},
+    { "brand" : "iBall"},
+    { "brand" : "Intex"},
+    { "brand" : "QHMPL"},
+    { "brand" : "rapoo"}
+])
+,
+db.speakers.insertMany([
+    { "brand" : "Dell"},
+    { "brand" : "Lenovo"},
+    { "brand" : "Logitech"},
+    { "brand" : "HP"},
+    { "brand" : "iBall"},
+    { "brand" : "Intex"},
+    { "brand" : "QHMPL"},
+])
+,
+
 db.monitor.insertMany([
     {"brand" : "Acer"},
     {"brand" : "Alienware"},

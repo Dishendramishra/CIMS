@@ -68,36 +68,55 @@
             </td>
             {% endblock %}
         </tr>
-        <tr>
-            <td><label>Custodian Name</label></td>
-            <td colspan="2"><input type="text" id="custodian-name" class="w-100"></td>
-        </tr>
-        <tr>
-            <td><label>Custodian Mob. No.</label></td>
-            <td colspan="2"><input type="text" id="custodian-mobile" class="w-100" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" /></td>
-        </tr>
+        
         <tr>
             <td><label>Custodian Pay Roll</label></td>
-            <td colspan="2"><input  class="w-100" oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="custodian"></button></td>
+            <td colspan="2"><input  class="w-100" oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian-payroll" data-identifer="qrcode-input"></td>
         </tr>
-            <td colspan="3">
+
+        <tr>
+            <td colspan="4">
                 <div class="alert alert-danger collapse text-center" role="alert" id="custodian-alert" >
                     Invalid Pay Roll Number !
                 </div>
             </td>
+        </tr>
+        
         <tr>
-            <td><label>PO No.</label></td>
-            <td colspan="2"><input class="w-100" oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="po-number"></button></td>
+            <td><label>Custodian Email</label></td>
+            <td colspan="2"><input type="text" id="custodian-email" class="w-100"></td>
         </tr>
+
+        <tr>
+            <td><label>Custodian Name</label></td>
+            <td colspan="2"><input type="text" id="custodian-name" class="w-100"></td>
         </tr>
-            <td colspan="3">
+        
+        <tr>
+            <td><label>Custodian Mob. No.</label></td>
+            <td colspan="2"><input type="text" id="custodian-mobile" class="w-100" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" /></td>
+        </tr>
+        
+        <tr>
+            <td><label>COINS PO No.</label></td>
+            <td colspan="2"><input class="w-100" oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="coins-po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="coins-po-number"></button></td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
                 <div class="alert alert-danger collapse text-center" role="alert" id="po-alert">
-                    Invalid PO Number !
+                    Invalid COINS PO Number !
                 </div>
             </td>
+        </tr>
+
         <tr>
+            <td><label>GeM PO No.</label></td>
+            <td colspan="2"><input class="w-100" oninput="" style="text-transform: uppercase" type="text" name="" id="gem-po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="gem-po-number"></button></td>
+        </tr>
+
         <tr>
             <td><label>CPU</label></td>
             <td>
@@ -110,6 +129,7 @@
             <td><input type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cpu"></button></td>
         </tr>
+
         <tr>
             <td> <label>Motherboard</label> </td>
             <td>
@@ -122,6 +142,7 @@
             <td><input type="text" name="" id="motherboard" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="motherboard"></button></td>
         </tr>
+
         <tr>
             <td> <label>RAM</label> </td>
             <td>
@@ -134,6 +155,7 @@
             <td><input type="text" name="" id="ram" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ram"></button></td>
         </tr>
+
         <tr>
             <td> <label>HDD</label> </td>
             <td>
@@ -146,6 +168,7 @@
             <td><input type="text" name="" id="hdd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="hdd"></button></td>
         </tr>
+
         <tr>
             <td> <label>SSD</label> </td>
             <td>
@@ -158,6 +181,7 @@
             <td><input type="text" name="" id="ssd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ssd"></button></td>
         </tr>
+
         <tr>
             <td> <label>SMPS</label> </td>
             <td>
@@ -170,6 +194,7 @@
             <td><input type="text" name="" id="smps" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="smps"></button></td>
         </tr>
+
         <tr>
             <td> <label>Cabinet</label> </td>
             <td>
@@ -182,6 +207,7 @@
             <td><input type="text" name="" id="cabinet" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cabinet"></button></td>
         </tr>
+
         <tr>
             <td> <label>Monitor</label> </td>
             <td>
@@ -194,6 +220,7 @@
             <td><input type="text" name="" id="monitor" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="monitor"></button></td>
         </tr>
+
         <tr>
             <td> <label>Mouse</label> </td>
             <td>
@@ -206,6 +233,7 @@
             <td><input type="text" name="" id="mouse" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="mouse"></button></td>
         </tr>
+
         <tr>
             <td> <label>Keyboard</label> </td>
             <td>
@@ -218,6 +246,7 @@
             <td><input type="text" name="" id="keyboard" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="keyboard"></button></td>
         </tr>
+
         <tr>
             <td> <label>Speakers</label> </td>
             <td>
@@ -230,6 +259,7 @@
             <td><input type="text" name="" id="speakers" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="speakers"></button></td>
         </tr>
+
         <tr>
             <td> <label>Webcam</label> </td>
             <td>
@@ -242,12 +272,14 @@
             <td><input type="text" name="" id="webcam" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="webcam"></button></td>
         </tr>
+
         <tr>
             <td align="center" colspan="2"><button id="reset" class="btn btn-warning"
                 onclick="reset_form()"><i class="fa fa-times" aria-hidden="true"></i> Reset</button></td>
             <td align="center" colspan="2"><button id="submit" class="btn btn-success"
                 onclick="submit_data()"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button></td>
         </tr>
+        
     </table>
 
     <!-- Modal HTML embedded directly into document -->
@@ -330,10 +362,12 @@
         reset_input_color();
         
         data = {
-            "custodian"         :   $("#custodian").val(),
+            "custodian-payroll" :   $("#custodian-payroll").val(),
+            "custodian-email"   :   $("#custodian-email").val(),
             "custodian-name"    :   $("#custodian-name").val(),
             "custodian-mobile"  :   $("#custodian-mobile").val(),
-            "po-number"         :   $("#po-number").val(),
+            "coins-po-number"   :   $("#coins-po-number").val(),
+            "gem-po-number"     :   $("#gem-po-number").val(),
             "cpu"               :   [ $("#cpu_list").val(),         $("#cpu").val() ],
             "motherboard"       :   [ $("#motherboard_list").val(), $("#motherboard").val() ],
             "ram"               :   [ $("#ram_list").val(),         $("#ram").val() ],
