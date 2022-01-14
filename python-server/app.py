@@ -120,7 +120,11 @@ def form():
         smps_list        = sorted(list(mydb['smps'].distinct("brand")))
         cabinet_list     = sorted(list(mydb['cabinet'].distinct("brand")))
         monitor_list     = sorted(list(mydb['monitor'].distinct("brand")))
-        mousekey_list    = sorted(list(mydb['mousekey'].distinct("brand")))
+        mouse_list       = sorted(list(mydb['mouse'].distinct("brand")))
+        keyboard_list    = sorted(list(mydb['keyboard'].distinct("brand")))
+        speakers_list    = sorted(list(mydb['speakers'].distinct("brand")))
+        webcam_list      = sorted(list(mydb['webcam'].distinct("brand")))
+        
 
     except Exception as e:
         status_code = Response(status=400)
@@ -134,7 +138,10 @@ def form():
                             smps_list = smps_list,
                             cabinet_list = cabinet_list,
                             monitor_list = monitor_list,
-                            mousekey_list = mousekey_list
+                            mouse_list = mouse_list,
+                            keyboard_list =  keyboard_list, 
+                            speakers_list =  speakers_list, 
+                            webcam_list =  webcam_list 
                             )
 
 @app.route('/logout')
