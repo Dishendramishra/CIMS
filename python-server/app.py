@@ -17,6 +17,7 @@ import os
 import re
 from datetime import datetime
 from typing import Collection
+from pprint import pprint
 # ========================================
 
 # custom
@@ -211,12 +212,32 @@ def add_data():
     primary_key = datetime.now().strftime("%Y%m%d%f")
     record["_id"] = primary_key
 
+    warranties = list(mydb["warranty"].find({},{"_id":0,"part":1, "period":1}))    
+    warranties = dict(
+        zip( [doc["part"] for doc in warranties] ,
+        [doc["period"] for doc in warranties])
+    )
+
+    record["cpu"].append(warranties["cpu"])
+    record["motherboard"].append(warranties["motherboard"])
+    record["ram"].append(warranties["ram"])
+    record["hdd"].append(warranties["hdd"])
+    record["ssd"].append(warranties["ssd"])
+    record["smps"].append(warranties["smps"])
+    record["cabinet"].append(warranties["cabinet"])
+    record["monitor"].append(warranties["monitor"])
+    record["mouse"].append(warranties["mouse"])
+    record["keyboard"].append(warranties["keyboard"])
+    record["speakers"].append(warranties["speakers"])
+    record["webcam"].append(warranties["webcam"])
+
     try:
         mycoll.insert_one(record)
         # status_code = Response(status=201)
         record["pcdt-id"] = primary_key
+        record["date"]    = datetime.now().strftime("%d-%m-%Y")
         generate_report(primary_key+".pdf", record)
-        send_email([record["custodian-email"]], primary_key+".pdf")
+        # send_email([record["custodian-email"]], primary_key+".pdf")
         return render_template("qrcode.html", primary_key=primary_key)
 
     except Exception as e:

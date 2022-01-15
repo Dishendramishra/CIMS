@@ -7,3 +7,4 @@ colorama==0.4.4
 typing==3.7.4.3
 flask_qrcode==3.0.0
 reportlab==3.6.5
+flask-security==3.0.0
