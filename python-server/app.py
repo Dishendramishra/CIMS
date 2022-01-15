@@ -7,6 +7,8 @@ from flask_qrcode import QRcode
 from werkzeug.urls import url_parse
 import pymongo
 
+import hashlib 
+
 from colorama import init, Fore, Back, Style
 init()
 # ========================================
@@ -22,7 +24,7 @@ from pprint import pprint
 
 # custom
 # ========================================
-from form import LoginForm
+from form import LoginForm, PasswordChangeForm
 from cims_report import *
 from cims_email import *
 # ========================================
@@ -92,7 +94,6 @@ mycoll = mydb[CIMS_COLLECTION]
 @app.route('/favicon')
 @app.route('/favicon.ico')
 def favicon():
-    print(os.path.join(app.root_path, 'static/img'))
     return send_from_directory(os.path.join(app.root_path, 'static/img'),
                                'prl.png', mimetype='image/vnd.microsoft.icon')
 
@@ -108,7 +109,8 @@ def login():
         # cprint("r",form.username.data)
         # cprint("r",form.password.data)
         
-        user = User.objects(username=form.username.data,password=form.password.data).first()
+        password_hash = hashlib.sha256(form.password.data.encode()).hexdigest()
+        user = User.objects(username=form.username.data,password=password_hash).first()
 
         if user is None:# or not user.check_password(form.password.data):
             return redirect(url_for('login'))
@@ -124,7 +126,9 @@ def login():
     else:
         return render_template('login.html', form=form)
 
+
 @app.route('/form', methods=['GET',"POST"])
+@login_required
 def form():
 
     try:
@@ -165,7 +169,26 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
+@app.route('/change_password',methods=["GET","POST"])
+@login_required
+def change_password():
+
+    form = PasswordChangeForm()
+
+    if form.validate_on_submit():
+        mydb['users'].update_one(
+            {"username":current_user.username},
+            {"$set" :{
+                "password": hashlib.sha256(form.new_password.data.encode()).hexdigest()}}
+            )
+        return redirect(url_for("logout"))
+        
+    else:
+        return render_template("change_password.html", form=form)
+
 @app.route('/add_data', methods=["POST"])
+@login_required
 def add_data():
     record = request.json
     print(record)
