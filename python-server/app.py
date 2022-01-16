@@ -20,6 +20,8 @@ import re
 from datetime import datetime
 from typing import Collection
 from pprint import pprint
+import base64
+import traceback
 # ========================================
 
 # custom
@@ -263,10 +265,17 @@ def add_data():
 
         # receiver_email = mydb["users"].find_one()
         # send_email([], primary_key+".pdf")
-        return render_template("qrcode.html", primary_key=primary_key)
+        
+        base64_pdf = base64.b64encode(open(f"{primary_key}.pdf","rb").read())
+        
+        return jsonify({
+            "filename" : f"{primary_key}.pdf", 
+            "data" : base64_pdf.decode("utf-8") 
+        })
 
     except Exception as e:
         # print("Error occured !")
+        # print(traceback.format_exc())
         # print(e)
         status_code = Response(status=400)
         return status_code
