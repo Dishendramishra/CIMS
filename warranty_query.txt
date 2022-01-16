@@ -1,0 +1,13 @@
+db.warranty.deleteMany({});
+db.warranty.insertOne({ "part" : "cpu",           "period": "4 Years"});
+db.warranty.insertOne({ "part" : "motherboard",   "period": "4 Years"});
+db.warranty.insertOne({ "part" : "ram",           "period": "4 Years"});
+db.warranty.insertOne({ "part" : "hdd",           "period": "4 Years"});
+db.warranty.insertOne({ "part" : "ssd",           "period": "4 Years"});
+db.warranty.insertOne({ "part" : "smps",          "period": "4 Years"});
+db.warranty.insertOne({ "part" : "cabinet",       "period": "4 Years"});
+db.warranty.insertOne({ "part" : "monitor",       "period": "4 Years"});
+db.warranty.insertOne({ "part" : "mouse",         "period": "4 Years"});
+db.warranty.insertOne({ "part" : "keyboard",      "period": "4 Years"});
+db.warranty.insertOne({ "part" : "speakers",      "period": "4 Years"});
+db.warranty.insertOne({ "part" : "webcam",        "period": "4 Years"});

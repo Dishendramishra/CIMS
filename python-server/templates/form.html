@@ -60,87 +60,227 @@
     <table class="table_layout" id="items-table">
         <tr>
             {% block content %}
-            <td >
+            <td colspan="2">
                 <h3><span class="text-primary"><i class="fa fa-user" aria-hidden="true"></i> {{ current_user.username[0]|upper}}{{ current_user.username[1:]}}</span></h3>
             </td>
             <td align="right" colspan="2">
+                <button class="btn btn-primary" onclick="location.href = '/change_password';""><i class="fas fa-key"></i> Change Password</button>
                 <button class="btn btn-danger" onclick="signout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
             </td>
             {% endblock %}
         </tr>
+        
         <tr>
             <td><label>Custodian Pay Roll</label></td>
-            <td><input  oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian" data-identifer="qrcode-input"></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="custodian"></button></td>
+            <td colspan="2"><input  class="w-100" oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian-payroll" data-identifer="qrcode-input"></td>
         </tr>
-            <td colspan="3">
+
+        <tr>
+            <td colspan="4">
                 <div class="alert alert-danger collapse text-center" role="alert" id="custodian-alert" >
                     Invalid Pay Roll Number !
                 </div>
             </td>
+        </tr>
+        
         <tr>
-            <td><label>PO No.</label></td>
-            <td><input oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="po-number" data-identifer="qrcode-input"></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="po-number"></button></td>
+            <td><label>Custodian Email</label></td>
+            <td colspan="2"><input type="text" id="custodian-email" class="w-100"></td>
         </tr>
+
+        <tr>
+            <td><label>Custodian Name</label></td>
+            <td colspan="2"><input type="text" id="custodian-name" class="w-100"></td>
         </tr>
-            <td colspan="3">
+        
+        <tr>
+            <td><label>Custodian Mob. No.</label></td>
+            <td colspan="2"><input type="text" id="custodian-mobile" class="w-100" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" /></td>
+        </tr>
+        
+        <tr>
+            <td><label>COINS PO No.</label></td>
+            <td colspan="2"><input class="w-100" oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="coins-po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="coins-po-number"></button></td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
                 <div class="alert alert-danger collapse text-center" role="alert" id="po-alert">
-                    Invalid PO Number !
+                    Invalid COINS PO Number !
                 </div>
             </td>
+        </tr>
+
         <tr>
+            <td><label>GeM PO No.</label></td>
+            <td colspan="2"><input class="w-100" oninput="" style="text-transform: uppercase" type="text" name="" id="gem-po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="gem-po-number"></button></td>
+        </tr>
+
         <tr>
             <td><label>CPU</label></td>
+            <td>
+                <select id="cpu_list">
+                    {% for cpu in  cpu_list %}
+                    <option value="{{ cpu }}">{{ cpu }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cpu"></button></td>
         </tr>
+
         <tr>
             <td> <label>Motherboard</label> </td>
+            <td>
+                <select id="motherboard_list" class="w-100">
+                    {% for motherboard in  motherboard_list %}
+                    <option value="{{ motherboard }}">{{ motherboard }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="motherboard" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="motherboard"></button></td>
         </tr>
+
         <tr>
             <td> <label>RAM</label> </td>
+            <td>
+                <select id="ram_list" class="w-100">
+                    {% for ram in  ram_list %}
+                    <option value="{{ ram }}">{{ ram }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="ram" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ram"></button></td>
         </tr>
+
         <tr>
             <td> <label>HDD</label> </td>
+            <td>
+                <select id="harddisk_list" class="w-100">
+                    {% for harddisk in  harddisk_list %}
+                    <option value="{{ harddisk }}">{{ harddisk }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="hdd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="hdd"></button></td>
         </tr>
+
         <tr>
             <td> <label>SSD</label> </td>
+            <td>
+                <select id="harddisk_list" class="w-100">
+                    {% for harddisk in  harddisk_list %}
+                    <option value="{{ harddisk }}">{{ harddisk }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="ssd" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ssd"></button></td>
         </tr>
+
         <tr>
             <td> <label>SMPS</label> </td>
+            <td>
+                <select id="smps_list" class="w-100">
+                    {% for smps in  smps_list %}
+                    <option value="{{ smps }}">{{ smps }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="smps" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="smps"></button></td>
         </tr>
+
         <tr>
             <td> <label>Cabinet</label> </td>
+            <td>
+                <select id="cabinet_list" class="w-100">
+                    {% for cabinet in  cabinet_list %}
+                    <option value="{{ cabinet }}">{{ cabinet }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="cabinet" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cabinet"></button></td>
         </tr>
+
         <tr>
             <td> <label>Monitor</label> </td>
+            <td>
+                <select id="monitor_list" class="w-100">
+                    {% for monitor in  monitor_list %}
+                    <option value="{{ monitor }}">{{ monitor }}</option>
+                    {% endfor %}
+                </select>
+            </td>
             <td><input type="text" name="" id="monitor" data-identifer="qrcode-input"/></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="monitor"></button></td>
         </tr>
+
         <tr>
-            <td> <label>Mouse & Keyboard</label> </td>
-            <td><input type="text" name="" id="mousekey" data-identifer="qrcode-input"/></td>
-            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="mousekey"></button></td>
+            <td> <label>Mouse</label> </td>
+            <td>
+                <select id="mouse_list" class="w-100">
+                    {% for mouse in  mouse_list %}
+                    <option value="{{ mouse }}">{{ mouse }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input type="text" name="" id="mouse" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="mouse"></button></td>
         </tr>
+
         <tr>
-            <td align="center"><button id="reset" class="btn btn-warning"
+            <td> <label>Keyboard</label> </td>
+            <td>
+                <select id="keyboard_list" class="w-100">
+                    {% for keyboard in  keyboard_list %}
+                    <option value="{{ keyboard }}">{{ keyboard }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input type="text" name="" id="keyboard" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="keyboard"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Speakers</label> </td>
+            <td>
+                <select id="speakers_list" class="w-100">
+                    {% for speakers in  speakers_list %}
+                    <option value="{{ speakers }}">{{ speakers }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input type="text" name="" id="speakers" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="speakers"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Webcam</label> </td>
+            <td>
+                <select id="webcam_list" class="w-100">
+                    {% for webcam in  webcam_list %}
+                    <option value="{{ webcam }}">{{ webcam }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input type="text" name="" id="webcam" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="webcam"></button></td>
+        </tr>
+
+        <tr>
+            <td align="center" colspan="2"><button id="reset" class="btn btn-warning"
                 onclick="reset_form()"><i class="fa fa-times" aria-hidden="true"></i> Reset</button></td>
             <td align="center" colspan="2"><button id="submit" class="btn btn-success"
                 onclick="submit_data()"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button></td>
         </tr>
+        
     </table>
 
     <!-- Modal HTML embedded directly into document -->
@@ -186,13 +326,19 @@
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) { 
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                response = JSON.parse(xhr.response);
                 Swal.fire({
                     icon: 'success',
-                    html : xhr.response,
+                    width: "100%",
+                    html : `<object id="report_pdf" type="application/pdf" style="width:100%;height:500px;" data="data:application/pdf;base64,${response["data"]}"></object>`,
                     title: 'Asset Id Generated!',
                 }).then(function(){
-                    download(document.getElementById("qrcode").src, "qrcode.png", "img/png");
+                    // download qr code image
+                    // download(document.getElementById("qrcode").src, "qrcode.png", "img/png");
+
+                    // download pdf
+                    download(document.getElementById("report_pdf").data, response["filename"], "application/pdf");
                 });
                 
             }
@@ -223,20 +369,27 @@
         reset_input_color();
         
         data = {
-            "custodian"     :   $("#custodian").val(),
-            "po-number"     :   $("#po-number").val(),
-            "cpu"           :   $("#cpu").val(),
-            "motherboard"   :   $("#motherboard").val(),
-            "ram"           :   $("#ram").val(),
-            "hdd"           :   $("#hdd").val(),
-            "ssd"           :   $("#ssd").val(),
-            "smps"          :   $("#smps").val(),
-            "cabinet"       :   $("#cabinet").val(),
-            "monitor"       :   $("#monitor").val(),
-            "mousekey"      :   $("#mousekey").val(),
-            "deo"           :   "{{current_user.username}}",  // getting username from flask
+            "custodian-payroll" :   $("#custodian-payroll").val(),
+            "custodian-email"   :   $("#custodian-email").val(),
+            "custodian-name"    :   $("#custodian-name").val(),
+            "custodian-mobile"  :   $("#custodian-mobile").val(),
+            "coins-po-number"   :   $("#coins-po-number").val(),
+            "gem-po-number"     :   $("#gem-po-number").val(),
+            "cpu"               :   [ $("#cpu_list").val(),         $("#cpu").val() ],
+            "motherboard"       :   [ $("#motherboard_list").val(), $("#motherboard").val() ],
+            "ram"               :   [ $("#ram_list").val(),         $("#ram").val() ],
+            "hdd"               :   [ $("#harddisk_list").val(),    $("#hdd").val() ],
+            "ssd"               :   [ $("#harddisk_list").val(),    $("#ssd").val() ],
+            "smps"              :   [ $("#smps_list").val(),        $("#smps").val() ],
+            "cabinet"           :   [ $("#cabinet_list").val(),     $("#cabinet").val() ],
+            "monitor"           :   [ $("#monitor_list").val(),     $("#monitor").val() ],
+            "mouse"             :   [ $("#mouse_list").val(),       $("#mouse").val() ],
+            "keyboard"          :   [ $("#keyboard_list").val(),    $("#keyboard").val() ],
+            "speakers"          :   [ $("#speakers_list").val(),    $("#speakers").val() ],
+            "webcam"            :   [ $("#webcam_list").val(),      $("#webcam").val() ],
+            "deo"               :   "{{current_user.username}}",  // getting username from flask
         }
-
+        // console.log(data);
         sendData("/add_data", "POST", JSON.stringify(data))
     }
 
