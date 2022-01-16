@@ -260,7 +260,9 @@ def add_data():
         record["pcdt-id"] = primary_key
         record["date"]    = datetime.now().strftime("%d-%m-%Y")
         generate_report(primary_key+".pdf", record)
-        # send_email([record["custodian-email"]], primary_key+".pdf")
+
+        # receiver_email = mydb["users"].find_one()
+        # send_email([], primary_key+".pdf")
         return render_template("qrcode.html", primary_key=primary_key)
 
     except Exception as e:
