@@ -102,5 +102,5 @@ sudo systemctl enable --now xrdp
 sudo ufw allow from any to any port 3389 proto tcp
 
 # echo -e ${RED}"\n Citrix Receiver" ${Color_Off}
-# wget -e use_proxy=yes -e https_proxy=$https_proxy -O iclient.deb "https://downloads.citrix.com/20234/icaclient_21.12.0.18_amd64.deb?__gda__=exp=1642449285~acl=/*~hmac=19d3b5faf1abe55a64b3485700caf1de84de1bd63dee7e60e0181913061d7683"
+# wget -e use_proxy=yes -e https_proxy=$https_proxy -O iclient.deb "https://downloads.citrix.com/20234/icaclient_21.12.0.18_amd64.deb?__gda__=exp=1642502991~acl=/*~hmac=2a225898f348c1178ef9264d421d83f0ff1e6a079f53288bcb1efdbec9f4f0c8"
 # sudo dpkg -i ./iclient.deb
