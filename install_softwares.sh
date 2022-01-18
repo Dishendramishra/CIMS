@@ -32,9 +32,10 @@ export ftp_proxy="http://${PROXY_USER}:${PROXY_PASSWD}@172.16.0.1:3128/"
 echo $http_proxy
 
 echo -e ${BLUE}"\n+----------------------------------------------------+"
-echo -e ${BLUE}"|              updating package lists                |"
+echo -e ${BLUE}"|       updating & upgrading package lists           |"
 echo -e "+----------------------------------------------------+" ${Color_Off}
 sudo http_proxy=$http_proxy apt update -y
+sudo http_proxy=$http_proxy apt upgrade -y
 
 
 echo -e ${BLUE}"\n+----------------------------------------------------+"
