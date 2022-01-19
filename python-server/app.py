@@ -257,10 +257,10 @@ def add_data():
     record["webcam"].append(warranties["webcam"])
 
     try:
-        mycoll.insert_one(record)
-        # status_code = Response(status=201)
         record["pcdt-id"] = primary_key
         record["date"]    = datetime.now().strftime("%d-%m-%Y")
+        
+        mycoll.insert_one(record)
         generate_report(primary_key+".pdf", record)
 
         # receiver_email = mydb["users"].find_one()
