@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>PRL CIMS</title>
+    
+    
+    <link rel="stylesheet" href="static/styles/bootstrap.css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/all.min.css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/fontawesome.min.css"/>
+    <link rel="stylesheet" href="static/styles/jquery.datetimepicker.min.css"/>
+    <link rel="stylesheet" href="static/styles/jquery_multiselect.css"/>
+    <link rel="stylesheet" href="static/styles/jquery.modal.min.css" />
+
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="static/js/sweetalert2@11.js"></script>
+    <script src="static/js/jquery.modal.min.js"></script>
+    <script src="static/js/download.min.js"></script>
+
+    <style>
+        html,
+        body {
+            background-image: url("static/img/background.png");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+
+        .table_layout {
+            margin: auto;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+        }
+
+        td {
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+        }
+
+        input,
+        select {
+            border-radius: 5px;
+            border-width: 2px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <h1 class="text-white p-2">PRL CIMS</h1>
+
+    <table class="table_layout" id="items-table">
+        <tr>
+            {% block content %}
+            <td >
+                <h3><span class="text-primary"><i class="fa fa-user" aria-hidden="true"></i> {{ current_user.username[0]|upper}}{{ current_user.username[1:]}}</span></h3>
+            </td>
+            <td align="right" colspan="3    ">
+                <button class="btn btn-danger" onclick="signout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+                <button class="btn btn-primary" onclick="location.href = '/';"><i class="fas fa-home"></i></button>
+            </td>
+            {% endblock %}
+        </tr>
+        
+        <tr>
+            <td><label>PCDT-ID</label></td>
+            <td colspan="2"><input id="pcdt-id" class="w-100" type="text" oninput="validatePCDTid(this)""></td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <div class="alert alert-danger collapse text-center" role="alert" id="pcdt-id-alert">
+                    Invalid PCDT-ID ! <br>
+                    Format = YYYYMMDDXXXXXX (X=digit)
+                </div>
+            </td>
+        </tr>
+        
+
+        <td colspan="4">
+            <div class="d-flex justify-content-around">
+                <button id="reset" class="btn btn-warning"
+                onclick="disable_fields();clear_fields()"><i class="fa fa-undo" aria-hidden="true"></i> reset</button>
+                <button id="search" class="btn btn-success"
+                    onclick="search_data()"><i class="fa fa-search" aria-hidden="true"></i> search</button>
+            </div>
+        </td>
+
+        <tr>
+            <td><label>Custodian Pay Roll</label></td>
+            <td colspan="2"><input data-input="field"  class="w-100" oninput="validateCustodian(this)" style="text-transform: uppercase" type="text" name="" id="custodian-payroll" data-identifer="qrcode-input"></td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <div class="alert alert-danger collapse text-center" role="alert" id="custodian-alert" >
+                    Invalid Pay Roll Number !
+                </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td><label>Custodian Email</label></td>
+            <td colspan="2"><input data-input="field" type="text" id="custodian-email" class="w-100"></td>
+        </tr>
+
+        <tr>
+            <td><label>Custodian Name</label></td>
+            <td colspan="2"><input data-input="field" type="text" id="custodian-name" class="w-100"></td>
+        </tr>
+        
+        <tr>
+            <td><label>Custodian Mob. No.</label></td>
+            <td colspan="2"><input data-input="field" type="text" id="custodian-mobile" class="w-100" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" /></td>
+        </tr>
+        
+        <tr>
+            <td><label>COINS Indent No.</label></td>
+            <td colspan="2"><input data-input="field" class="w-100" oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="coins-po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="coins-po-number"></button></td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <div class="alert alert-danger collapse text-center" role="alert" id="po-alert">
+                    Invalid COINS Indent Number ! <br>
+                    Format = XXXXEXXXXXXXXX or XXXXXXXXXXXXXX (X=digit)
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>GeM PO No.</label></td>
+            <td colspan="2"><input data-input="field" class="w-100" oninput="" style="text-transform: uppercase" type="text" name="" id="gem-po-number" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="gem-po-number"></button></td>
+        </tr>
+
+        <tr>
+            <td><label>CPU</label></td>
+            <td>
+                <select data-input="field" id="cpu_list">
+                    {% for cpu in  cpu_list %}
+                    <option value="{{ cpu }}">{{ cpu }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="cpu" data-identifer="qrcode-input"></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cpu"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Motherboard</label> </td>
+            <td>
+                <select data-input="field" id="motherboard_list" class="w-100">
+                    {% for motherboard in  motherboard_list %}
+                    <option value="{{ motherboard }}">{{ motherboard }}</option>    
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="motherboard" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="motherboard"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>RAM</label> </td>
+            <td>
+                <select data-input="field" id="ram_list" class="w-100">
+                    {% for ram in  ram_list %}
+                    <option value="{{ ram }}">{{ ram }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="ram" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ram"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>HDD</label> </td>
+            <td>
+                <select data-input="field" id="hdd_list" class="w-100">
+                    {% for harddisk in  harddisk_list %}
+                    <option value="{{ harddisk }}">{{ harddisk }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="hdd" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="hdd"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>SSD</label> </td>
+            <td>
+                <select data-input="field" id="ssd_list" class="w-100">
+                    {% for harddisk in  harddisk_list %}
+                    <option value="{{ harddisk }}">{{ harddisk }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="ssd" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="ssd"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>SMPS</label> </td>
+            <td>
+                <select data-input="field" id="smps_list" class="w-100">
+                    {% for smps in  smps_list %}
+                    <option value="{{ smps }}">{{ smps }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="smps" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="smps"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Cabinet</label> </td>
+            <td>
+                <select data-input="field" id="cabinet_list" class="w-100">
+                    {% for cabinet in  cabinet_list %}
+                    <option value="{{ cabinet }}">{{ cabinet }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="cabinet" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="cabinet"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Monitor</label> </td>
+            <td>
+                <select data-input="field" id="monitor_list" class="w-100">
+                    {% for monitor in  monitor_list %}
+                    <option value="{{ monitor }}">{{ monitor }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="monitor" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="monitor"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Mouse</label> </td>
+            <td>
+                <select data-input="field" id="mouse_list" class="w-100">
+                    {% for mouse in  mouse_list %}
+                    <option value="{{ mouse }}">{{ mouse }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="mouse" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="mouse"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Keyboard</label> </td>
+            <td>
+                <select data-input="field" id="keyboard_list" class="w-100">
+                    {% for keyboard in  keyboard_list %}
+                    <option value="{{ keyboard }}">{{ keyboard }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="keyboard" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="keyboard"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Speakers</label> </td>
+            <td>
+                <select data-input="field" id="speakers_list" class="w-100">
+                    {% for speakers in  speakers_list %}
+                    <option value="{{ speakers }}">{{ speakers }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="speakers" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="speakers"></button></td>
+        </tr>
+
+        <tr>
+            <td> <label>Webcam</label> </td>
+            <td>
+                <select data-input="field" id="webcam_list" class="w-100">
+                    {% for webcam in  webcam_list %}
+                    <option value="{{ webcam }}">{{ webcam }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td><input data-input="field" type="text" name="" id="webcam" data-identifer="qrcode-input"/></td>
+            <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="webcam"></button></td>
+        </tr>
+
+        <tr>
+            <td colspan="4"><div class="d-flex justify-content-around">
+                <button id="edit" class="btn btn-warning"
+                    onclick="edit_data()"><i class="fa fa-edit" aria-hidden="true"></i> edit</button>
+
+                <button id="download_report" class="btn btn-primary"
+                    onclick="download_report()"><i class="fa fa-download" aria-hidden="true"></i> download</button>
+
+                <button id="send_email" class="btn btn-danger"
+                    onclick="send_email()"><i class="fa fa-envelope" aria-hidden="true"></i> email</button>
+
+                <button id="submit" class="btn btn-success"
+                    onclick="submit_data()"><i class="fa fa-paper-plane" aria-hidden="true"></i> submit</button>
+            </div></td>
+            
+            
+        </tr>
+        
+    </table>
+
+    <!-- Modal HTML embedded directly into document -->
+    <div id="ex1" class="modal" style="height: auto;">
+        <div id="qr-scanner" ></div><br>
+        <!-- <a href="#" rel="modal:close" class="btn btn-danger">Close</a> -->
+    </div>
+    
+</body>
+<script>
+
+    function disable_fields(){
+        $("select[data-input='field']").attr('disabled', 'disabled');
+        $("input[data-input='field']").attr('disabled', 'disabled');
+        $("#submit").attr('disabled', 'disabled');
+        $("#edit").attr('disabled', 'disabled');
+        $("#download_report").attr('disabled', 'disabled');
+        $("#send_email").attr('disabled', 'disabled');
+    }
+    disable_fields()
+
+    function edit_data(){
+        $("select[data-input='field']").removeAttr('disabled');
+        $("input[data-input='field']").removeAttr('disabled');
+        $("#download_report").attr('disabled', 'disabled');
+        $("#send_email").attr('disabled', 'disabled');
+        $("#submit").removeAttr('disabled');
+
+        // $("#pcdt-id").attr('disabled', 'disabled');  
+    }
+
+    function clear_fields(){
+        $("select[data-input='field']").val("");
+        $("input[data-input='field']").val("");
+    }
+
+    function validateCustodian(element){
+        pattern = /^PR\d{5}$/i
+        if (pattern.test(element.value)){
+            $("#custodian-alert").hide();
+             $("#submit").removeAttr("disabled");
+        }
+        else{
+            $("#custodian-alert").show();   
+            $("#submit").attr("disabled", true);
+        }
+    }
+
+    function validatePONumber(element){
+        pattern = /^\d{14}$|^\d{4}E\d{9}$/i
+        if (pattern.test(element.value)){
+            $("#po-alert").hide();
+             $("#submit").removeAttr("disabled");
+        }
+        else{
+            $("#po-alert").show();
+            $("#submit").attr("disabled", true);
+        }
+    }
+
+    function validatePCDTid(element){
+        pattern = /^\d{14}$/i
+        if (pattern.test(element.value)){
+            $("#pcdt-id-alert").hide();
+             $("#search").removeAttr("disabled");
+        }
+        else if(element.value == ""){
+            $("#pcdt-id-alert").hide();
+        }
+        else{
+            $("#pcdt-id-alert").show();
+            $("#search").attr("disabled", true);
+        }
+    }
+
+    function search_data(){
+        clear_fields();
+        json = {"pcdt-id" : $("#pcdt-id").val()};
+        sendData("/search_data", "POST", JSON.stringify(json));
+    }
+
+    function signout() {
+            window.location.replace('/logout');
+    }
+
+    function sendData(url, method, data=null) { 
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+        xhr.onreadystatechange = function () {        
+            var response;
+
+            if(xhr.readyState === 4){
+                response = JSON.parse(xhr.responseText);
+            }
+
+            if( xhr.readyState === 4 && xhr.status === 200 && response["type"] === "email"){
+                Swal.fire({
+                    icon : "success",
+                    html : `${response["msg"]}`,
+                });
+            }
+
+            if( xhr.readyState === 4 && xhr.status === 200 && response["type"] === "file"){
+                Swal.fire({
+                    width: "100%",
+                    confirmButtonText : "Download",
+                    html : `<object id="report_pdf" type="application/pdf" style="width:100%;height:500px;" data="data:application/pdf;base64,${response["data"]}"></object>`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        download(document.getElementById("report_pdf").data, response["filename"], "application/pdf");
+                        disable_fields();
+                        clear_fields();
+                   }
+                });
+
+            }
+            else if (xhr.readyState === 4 && xhr.status === 200 && response["type"] === "msg"){
+                response = JSON.parse(xhr.responseText);
+                console.log(response);
+
+                $("#custodian-payroll").val(response["custodian-payroll"]);
+                $("#custodian-email").val(response["custodian-email"]);
+                $("#custodian-name").val(response["custodian-name"]);
+                $("#custodian-mobile").val(response["custodian-mobile"]);
+                $("#coins-po-number").val(response["coins-po-number"]);
+                $("#gem-po-number").val(response["gem-po-number"]);
+                $("#cpu").val(response["cpu"][1]);                  $("#cpu_list").val(response["cpu"][0]);
+                $("#motherboard").val(response["motherboard"][1]);  $("#motherboard_list").val(response["motherboard"][0]);
+                $("#ram").val(response["ram"][1]);                  $("#ram_list").val(response["ram"][0]);
+                $("#hdd").val(response["hdd"][1]);                  $("#hdd_list").val(response["hdd"][0]);
+                $("#ssd").val(response["ssd"][1]);                  $("#ssd_list").val(response["ssd"][0]);
+                $("#smps").val(response["smps"][1]);                $("#smps_list").val(response["smps"][0]);
+                $("#cabinet").val(response["cabinet"][1]);          $("#cabinet_list").val(response["cabinet"][0]);
+                $("#monitor").val(response["monitor"][1]);          $("#monitor_list").val(response["monitor"][0]);
+                $("#mouse").val(response["mouse"][1]);              $("#mouse_list").val(response["mouse"][0]);
+                $("#keyboard").val(response["keyboard"][1]);        $("#keyboard_list").val(response["keyboard"][0]);
+                $("#speakers").val(response["speakers"][1]);        $("#speakers_list").val(response["speakers"][0]);
+                $("#webcam").val(response["webcam"][1]);            $("#webcam_list").val(response["webcam"][0]);
+                
+                $("#edit").removeAttr('disabled');
+                $("#download_report").removeAttr('disabled');
+                $("#send_email").removeAttr('disabled');
+            }
+            else if (xhr.readyState === 4 && xhr.status === 404){
+                var json = JSON.parse(xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    html: json['msg'],
+                    confirmButtonColor: "#0275d8",
+                });
+            }
+            else if (xhr.readyState === 4 && xhr.status === 400){
+                var json = JSON.parse(xhr.responseText);        
+                $.each(json, function(i, item){
+                    $(`#${i}`).css("border-color","red");
+                });
+            
+
+                Swal.fire({
+                    icon: 'error',
+                    text: json["msg"],
+                    confirmButtonColor: "#0275d8"
+                });
+            }
+
+        };
+        
+        xhr.send(data);
+    }
+    
+    function submit_data()  {
+
+        Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                reset_input_color();
+        
+                data = {
+                    "_id"               :   $("#pcdt-id").val(),
+                    "custodian-payroll" :   $("#custodian-payroll").val(),
+                    "custodian-email"   :   $("#custodian-email").val(),
+                    "custodian-name"    :   $("#custodian-name").val(),
+                    "custodian-mobile"  :   $("#custodian-mobile").val(),
+                    "coins-po-number"   :   $("#coins-po-number").val(),
+                    "gem-po-number"     :   $("#gem-po-number").val(),
+                    "cpu"               :   [ $("#cpu_list").val(),         $("#cpu").val() ],
+                    "motherboard"       :   [ $("#motherboard_list").val(), $("#motherboard").val() ],
+                    "ram"               :   [ $("#ram_list").val(),         $("#ram").val() ],
+                    "hdd"               :   [ $("#hdd_list").val(),         $("#hdd").val() ],
+                    "ssd"               :   [ $("#ssd_list").val(),         $("#ssd").val() ],
+                    "smps"              :   [ $("#smps_list").val(),        $("#smps").val() ],
+                    "cabinet"           :   [ $("#cabinet_list").val(),     $("#cabinet").val() ],
+                    "monitor"           :   [ $("#monitor_list").val(),     $("#monitor").val() ],
+                    "mouse"             :   [ $("#mouse_list").val(),       $("#mouse").val() ],
+                    "keyboard"          :   [ $("#keyboard_list").val(),    $("#keyboard").val() ],
+                    "speakers"          :   [ $("#speakers_list").val(),    $("#speakers").val() ],
+                    "webcam"            :   [ $("#webcam_list").val(),      $("#webcam").val() ],
+                    "deo"               :   "{{current_user.username}}",  // getting username from flask
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/modify_data", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.onreadystatechange = function () {
+
+
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // response = JSON.parse(xhr.response)[0];
+                        var json = JSON.parse(xhr.responseText);
+                        Swal.fire({
+                            icon: 'success',
+                            html: json["msg"],
+                            confirmButtonColor: "#0275d8"
+                        });
+                        clear_fields();
+                        disable_fields();
+                    }
+                    else if (xhr.readyState === 4 && xhr.status === 400)
+                    {
+                        var json = JSON.parse(xhr.responseText);
+                        
+
+                        $.each(json, function(i, item){
+                            $(`#${i}`).css("border-color","red");
+                        });
+                    
+
+                        Swal.fire({
+                            icon: 'error',
+                            html: json["msg"],
+                            confirmButtonColor: "#0275d8"
+                        });
+                    }
+                };
+                
+                xhr.send(JSON.stringify(data));     
+            }
+        });
+    }
+
+    function reset_input_color(){
+        $("[data-identifer='qrcode-input']").each(
+            function(){
+                $(this).css("border-color","");
+            }
+        );
+    }
+
+    function reset_form(){
+        $("[data-identifer='qrcode-input']").each(
+            function(){
+                $(this).val(null);
+                $(this).css("border-color","");
+            }
+        );
+    }
+
+    function scanCode(element){
+        $("#ex1").modal({
+            fadeDuration: 100,
+            fadeDelay: 0.60
+        });
+
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-scanner", 
+            { 
+                fps: 15, 
+                qrbox: 250 ,
+                experimentalFeatures: {
+                    useBarCodeDetectorIfSupported: true
+                },
+                rememberLastUsedCamera: true,
+                aspectRatio: 1.7777778
+            });
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // console.log(`Code scanned = ${decodedText}`, decodedResult);
+            console.log(`Code scanned = ${decodedText}`);
+            $(`#${element.getAttribute("data-input")}`).val(
+                $(`#${element.getAttribute("data-input")}`).val()+";"+ decodedText);
+
+            html5QrcodeScanner.clear();
+            $.modal.close();
+        }
+        
+        html5QrcodeScanner.render(onScanSuccess);
+    }
+
+    function download_report(){
+        json =  JSON.stringify({"filename":$("#pcdt-id").val()});
+        sendData("/download_report","POST",json);
+    }
+
+    function send_email(){
+        json =  JSON.stringify({
+            "filename"  : $("#pcdt-id").val(),
+            "to"        : $("#custodian-email").val(),
+        });
+
+        Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                sendData("/email_report","POST",json);
+            }
+        });
+    }
+
+</script>
+
+</html>

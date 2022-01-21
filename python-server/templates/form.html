@@ -60,10 +60,11 @@
     <table class="table_layout" id="items-table">
         <tr>
             {% block content %}
-            <td colspan="2">
+            <td colspan="1">
                 <h3><span class="text-primary"><i class="fa fa-user" aria-hidden="true"></i> {{ current_user.username[0]|upper}}{{ current_user.username[1:]}}</span></h3>
             </td>
-            <td align="right" colspan="2">
+            <td align="right" colspan="3">
+                <button class="btn btn-info" onclick="location.href = '/view_data';""><i class="far fa-eye"></i> View Report</button>
                 <button class="btn btn-primary" onclick="location.href = '/change_password';""><i class="fas fa-key"></i> Change Password</button>
                 <button class="btn btn-danger" onclick="signout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
             </td>
@@ -78,7 +79,8 @@
         <tr>
             <td colspan="4">
                 <div class="alert alert-danger collapse text-center" role="alert" id="custodian-alert" >
-                    Invalid Pay Roll Number !
+                    Invalid Pay Roll Number ! <br>
+                    Format = PRXXXXX (X=digit)
                 </div>
             </td>
         </tr>
@@ -99,7 +101,7 @@
         </tr>
         
         <tr>
-            <td><label>COINS PO No.</label></td>
+            <td><label>COINS Indent No.</label></td>
             <td colspan="2"><input class="w-100" oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="coins-po-number" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="coins-po-number"></button></td>
         </tr>
@@ -107,7 +109,8 @@
         <tr>
             <td colspan="4">
                 <div class="alert alert-danger collapse text-center" role="alert" id="po-alert">
-                    Invalid COINS PO Number !
+                    Invalid COINS Indent Number ! <br>
+                    Format = XXXXEXXXXXXXXX or XXXXXXXXXXXXXX (X=digit)
                 </div>
             </td>
         </tr>
@@ -160,7 +163,7 @@
         <tr>
             <td> <label>HDD</label> </td>
             <td>
-                <select id="harddisk_list" class="w-100">
+                <select id="hdd_list" class="w-100">
                     {% for harddisk in  harddisk_list %}
                     <option value="{{ harddisk }}">{{ harddisk }}</option>
                     {% endfor %}
@@ -173,7 +176,7 @@
         <tr>
             <td> <label>SSD</label> </td>
             <td>
-                <select id="harddisk_list" class="w-100">
+                <select id="ssd_list" class="w-100">
                     {% for harddisk in  harddisk_list %}
                     <option value="{{ harddisk }}">{{ harddisk }}</option>
                     {% endfor %}
@@ -305,7 +308,7 @@
 
 
     function validatePONumber(element){
-        pattern = /^PRAA\d{14}$|PRAA\d{4}E\d{9}$/i
+        pattern = /^\d{14}$|\d{4}E\d{9}$/i
         if (pattern.test(element.value)){
             $("#po-alert").hide();
              $("#submit").removeAttr("disabled");
@@ -378,8 +381,8 @@
             "cpu"               :   [ $("#cpu_list").val(),         $("#cpu").val() ],
             "motherboard"       :   [ $("#motherboard_list").val(), $("#motherboard").val() ],
             "ram"               :   [ $("#ram_list").val(),         $("#ram").val() ],
-            "hdd"               :   [ $("#harddisk_list").val(),    $("#hdd").val() ],
-            "ssd"               :   [ $("#harddisk_list").val(),    $("#ssd").val() ],
+            "hdd"               :   [ $("#hdd_list").val(),    $("#hdd").val() ],
+            "ssd"               :   [ $("#ssd_list").val(),    $("#ssd").val() ],
             "smps"              :   [ $("#smps_list").val(),        $("#smps").val() ],
             "cabinet"           :   [ $("#cabinet_list").val(),     $("#cabinet").val() ],
             "monitor"           :   [ $("#monitor_list").val(),     $("#monitor").val() ],

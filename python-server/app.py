@@ -172,6 +172,53 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/view_data',methods=["GET","POST"])
+@login_required
+def view_data():
+    cpu_list         = sorted(list(mydb['cpu'].distinct("brand")))
+    ram_list         = sorted(list(mydb['ram'].distinct("brand")))
+    motherboard_list = sorted(list(mydb['motherboard'].distinct("brand")))
+    harddisk_list    = sorted(list(mydb['harddisk'].distinct("brand")))
+    smps_list        = sorted(list(mydb['smps'].distinct("brand")))
+    cabinet_list     = sorted(list(mydb['cabinet'].distinct("brand")))
+    monitor_list     = sorted(list(mydb['monitor'].distinct("brand")))
+    mouse_list       = sorted(list(mydb['mouse'].distinct("brand")))
+    keyboard_list    = sorted(list(mydb['keyboard'].distinct("brand")))
+    speakers_list    = sorted(list(mydb['speakers'].distinct("brand")))
+    webcam_list      = sorted(list(mydb['webcam'].distinct("brand")))
+
+
+    return render_template("view_data.html", 
+                        cpu_list = cpu_list,
+                        ram_list = ram_list,
+                        motherboard_list = motherboard_list,
+                        harddisk_list = harddisk_list,
+                        smps_list = smps_list,
+                        cabinet_list = cabinet_list,
+                        monitor_list = monitor_list,
+                        mouse_list = mouse_list,
+                        keyboard_list =  keyboard_list, 
+                        speakers_list =  speakers_list, 
+                        webcam_list =  webcam_list 
+                        )
+
+@app.route('/search_data',methods=["POST"])
+@login_required
+def search_data():
+    json = request.json
+    
+    data = mycoll.find_one({"_id": json["pcdt-id"] })
+    
+    if data:
+        data["type"] = "msg"
+        return jsonify(data)
+
+    else:
+        return jsonify({
+            "msg":f"PCDT-ID {json['pcdt-id']} <br> No Record Found!",
+            "type":"msg"
+            }),404
+
 @app.route('/change_password',methods=["GET","POST"])
 @login_required
 def change_password():
@@ -193,7 +240,7 @@ def change_password():
 @login_required
 def add_data():
     record = request.json
-    print(record)
+    pprint(record)
 
     result = {}
 
@@ -223,7 +270,7 @@ def add_data():
     #================================================================== 
     #  Regex PO Number Check
     #================================================================== 
-    ponumber = re.compile("^PRAA\d{14}|PRAA\d{4}E\d{9}")
+    ponumber = re.compile("^\d{14}|\d{4}E\d{9}")
 
     record["coins-po-number"] = record["coins-po-number"].upper()
     record["gem-po-number"] = record["gem-po-number"].upper()
@@ -279,6 +326,134 @@ def add_data():
         # print(e)
         status_code = Response(status=400)
         return status_code
+
+@app.route('/modify_data', methods=["POST","GET"])
+@login_required
+def modify_data():
+    record = request.json
+
+    result = {}
+
+    for key in record.keys():
+        if isinstance(record[key], list) and not record[key][1].strip():
+            result[key] = "Empty"
+        elif isinstance(record[key], str) and not record[key].strip():
+            result[key] = "Empty"
+
+    if bool(result):
+        result["msg"] = "Fill the Red Highlighted Fields!"
+        return jsonify(result), 400
+
+    #================================================================== 
+    #  Regex Pay Roll Check
+    #================================================================== 
+    payroll = re.compile("^PR\d{5}")
+    
+    record["custodian-payroll"] = record["custodian-payroll"].upper()
+
+    if not bool(payroll.match(record["custodian-payroll"])):
+        result["custodian-payroll"] = "Empty"
+        result["msg"] = "Pay Roll Number is Not in Correct Format!"
+        return jsonify(result), 400
+    #==================================================================
+
+    #================================================================== 
+    #  Regex PO Number Check
+    #================================================================== 
+    ponumber = re.compile("^\d{14}|\d{4}E\d{9}")
+
+    record["coins-po-number"] = record["coins-po-number"].upper()
+    record["gem-po-number"] = record["gem-po-number"].upper()
+    
+    if not bool(ponumber.match(record["coins-po-number"])):
+        result["coins-po-number"] = "Empty"
+        result["msg"] = "Coins PO Number is Not in Correct Format!"
+        return jsonify(result), 400
+    #==================================================================
+
+    warranties = list(mydb["warranty"].find({},{"_id":0,"part":1, "period":1}))    
+    warranties = dict(
+        zip( [doc["part"] for doc in warranties] ,
+        [doc["period"] for doc in warranties])
+    )
+
+    try:        
+
+        result = mycoll.find_one_and_update({"_id":record["_id"]},{
+            "$set" : {
+                    "_id"               :   record["_id"] ,
+                    "custodian-payroll" :   record["custodian-payroll"] ,
+                    "custodian-email"   :   record["custodian-email"] ,
+                    "custodian-name"    :   record["custodian-name"] ,
+                    "custodian-mobile"  :   record["custodian-mobile"] ,
+                    "coins-po-number"   :   record["coins-po-number"] ,
+                    "gem-po-number"     :   record["gem-po-number"] ,
+                    "cpu"               :   [ record["cpu"][0],         record["cpu"][1]            ,warranties["cpu"]] ,
+                    "motherboard"       :   [ record["motherboard"][0], record["motherboard"][1]    ,warranties["motherboard"]] ,
+                    "ram"               :   [ record["ram"][0],         record["ram"][1]            ,warranties["ram"]] ,
+                    "hdd"               :   [ record["hdd"][0],         record["hdd"][1]            ,warranties["hdd"]] ,
+                    "ssd"               :   [ record["ssd"][0],         record["ssd"][1]            ,warranties["ssd"]] ,
+                    "smps"              :   [ record["smps"][0],        record["smps"][1]           ,warranties["smps"]] ,
+                    "cabinet"           :   [ record["cabinet"][0],     record["cabinet"][1]        ,warranties["cabinet"]] ,
+                    "monitor"           :   [ record["monitor"][0],     record["monitor"][1]        ,warranties["monitor"]] ,
+                    "mouse"             :   [ record["mouse"][0],       record["mouse"][1]          ,warranties["mouse"]] ,
+                    "keyboard"          :   [ record["keyboard"][0],    record["keyboard"][1]       ,warranties["keyboard"]] ,
+                    "speakers"          :   [ record["speakers"][0],    record["speakers"][1]       ,warranties["speakers"]] ,
+                    "webcam"            :   [ record["webcam"][0],      record["webcam"][1]         ,warranties["webcam"]] ,
+                    "deo"               :   record["deo"] 
+                }
+        }, new=True)
+
+        if result:
+            if os.path.exists(f"{record['_id']}.pdf"):
+                os.remove(f"{record['_id']}.pdf")
+
+            generate_report(f"{record['_id']}.pdf", result)
+            msg = f"PCDT-ID {record['_id']}<br>Record Updated!"
+            return jsonify({
+                "msg":msg,
+                "type":"msg"
+                })
+        else:
+            string = f"PCDT-ID {record['_id']}<br>Record Not Found!"
+            return jsonify({"msg" : string}) , 400
+            
+    except Exception as e:
+        print("Error occured !")
+        print(traceback.format_exc())
+        print(e)
+        return jsonify({"msg" : "Server Error!"}) , 400
+
+
+@app.route('/download_report', methods=["POST"])
+@login_required
+def download_report():
+    filename = request.json["filename"]
+
+    if not os.path.exists(f"{filename}.pdf"):
+        data = mycoll.find_one({"_id":filename})
+        generate_report(f"{filename}.pdf", data)
+
+    base64_pdf = base64.b64encode(open(f"{filename}.pdf","rb").read())
+
+    return jsonify({
+                "type"     : "file",
+                "filename" : f"{filename}.pdf", 
+                "data" : base64_pdf.decode("utf-8") 
+            })
+
+
+@app.route('/email_report', methods=["POST"])
+@login_required
+def email_report():
+    filename = request.json["filename"]
+    to = request.json["to"]
+    send_email([to],f"{filename}.pdf")
+
+    return jsonify({
+                "type"     : "email",
+                "msg"      : "Email Sent!"
+            })
 
 if __name__ == '__main__':
     app.run(
