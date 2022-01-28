@@ -449,7 +449,7 @@ def download_report():
 def email_report():
     filename = request.json["filename"]
     to = request.json["to"]
-    send_email([to],f"{filename}.pdf")
+    send_email([to],f"{filename}.pdf",sender=current_user.username)
 
     return jsonify({
                 "type"     : "email",
