@@ -26,6 +26,7 @@ def generate_report( filename, report_data):
     "Custodian Payroll"     : [report_data["custodian-payroll"]],
     "Custodian Name"        : [report_data["custodian-name"]],
     "Custodian Mobile"      : [report_data["custodian-mobile"]],
+    "Asset ID"              : [report_data["asset-id"]],
     "Coins PO No."          : [report_data["coins-po-number"]],
     "GeM PO No."            : [report_data["gem-po-number"]],
     "Assembling Person"     : [report_data["deo"]],
@@ -79,7 +80,11 @@ def generate_report( filename, report_data):
         ('SPAN', (1,6), (3,6)),
         ('SPAN', (1,7), (3,7)),
         ('SPAN', (1,8), (3,8)),
-        ('SPAN', (0,9), (3,9)),
+        ('SPAN', (1,9), (3,9)),
+
+        # hardware components
+        ('SPAN', (0,10), (3,10)),
+
         ('INNERGRID', (0,2), (-1,-1), 0.25, colors.black),
         ('BOX', (0,2), (-1,-1), 0.25, colors.black),
     ]))

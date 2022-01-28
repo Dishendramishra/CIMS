@@ -385,6 +385,7 @@ def modify_data():
                     "custodian-payroll" :   record["custodian-payroll"] ,
                     "custodian-email"   :   record["custodian-email"] ,
                     "custodian-name"    :   record["custodian-name"] ,
+                    "asset-id"          :   record["asset-id"] ,
                     "custodian-mobile"  :   record["custodian-mobile"] ,
                     "coins-po-number"   :   record["coins-po-number"] ,
                     "gem-po-number"     :   record["gem-po-number"] ,

@@ -124,6 +124,12 @@
         </tr>
         
         <tr>
+            <td><label>Asset ID</label></td>
+            <td colspan="2"><input data-input="field" class="w-100" type="text" name="" id="asset-id" data-identifer="qrcode-input"></td>
+            <!-- <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="coins-po-number"></button></td> -->
+        </tr>
+
+        <tr>
             <td><label>COINS Indent No.</label></td>
             <td colspan="2"><input data-input="field" class="w-100" oninput="validatePONumber(this)" style="text-transform: uppercase" type="text" name="" id="coins-po-number" data-identifer="qrcode-input"></td>
             <td><button onclick="scanCode(this)" class="scan-qr-btn fa fa-camera fa-lg btn btn-primary " data-input="coins-po-number"></button></td>
@@ -445,6 +451,7 @@
                 $("#custodian-name").val(response["custodian-name"]);
                 $("#custodian-mobile").val(response["custodian-mobile"]);
                 $("#coins-po-number").val(response["coins-po-number"]);
+                $("#asset-id").val(response["asset-id"]);
                 $("#gem-po-number").val(response["gem-po-number"]);
                 $("#cpu").val(response["cpu"][1]);                  $("#cpu_list").val(response["cpu"][0]);
                 $("#motherboard").val(response["motherboard"][1]);  $("#motherboard_list").val(response["motherboard"][0]);
@@ -509,6 +516,7 @@
                     "custodian-email"   :   $("#custodian-email").val(),
                     "custodian-name"    :   $("#custodian-name").val(),
                     "custodian-mobile"  :   $("#custodian-mobile").val(),
+                    "asset-id"          :   $("#asset-id").val(),
                     "coins-po-number"   :   $("#coins-po-number").val(),
                     "gem-po-number"     :   $("#gem-po-number").val(),
                     "cpu"               :   [ $("#cpu_list").val(),         $("#cpu").val() ],
