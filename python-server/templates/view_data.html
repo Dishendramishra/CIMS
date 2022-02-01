@@ -73,7 +73,11 @@
         
         <tr>
             <td><label>PCDT-ID</label></td>
-            <td colspan="2"><input id="pcdt-id" class="w-100" type="text" oninput="validatePCDTid(this)""></td>
+            {% if pcdt_id%}
+                <td colspan="2"><input id="pcdt-id" class="w-100" type="text" oninput="validatePCDTid(this)" value={{pcdt_id}}  ></td>
+            {% else %}
+                <td colspan="2"><input id="pcdt-id" class="w-100" type="text" oninput="validatePCDTid(this)"></td>
+            {% endif %}
         </tr>
 
         <tr>

@@ -171,10 +171,25 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/reports',methods=["GET","POST"])
+@login_required
+def reports():
+
+    col_names = ["s.no","pcdt-id", "custodian-name", "custodian-payroll"]
+    
+    result = list(mycoll.find(
+        {"deo":current_user.username},
+        {"_id":0, "pcdt-id":1, "custodian-name":1, "custodian-payroll":1}
+    ))
+    pprint(result)
+    return render_template("reports.html", records=result, colnames=col_names)
 
 @app.route('/view_data',methods=["GET","POST"])
 @login_required
 def view_data():
+
+    pcdt_id = request.args.get("pcdt_id")
+    
     cpu_list         = sorted(list(mydb['cpu'].distinct("brand")))
     ram_list         = sorted(list(mydb['ram'].distinct("brand")))
     motherboard_list = sorted(list(mydb['motherboard'].distinct("brand")))
@@ -199,7 +214,8 @@ def view_data():
                         mouse_list = mouse_list,
                         keyboard_list =  keyboard_list, 
                         speakers_list =  speakers_list, 
-                        webcam_list =  webcam_list 
+                        webcam_list =  webcam_list,
+                        pcdt_id=pcdt_id
                         )
 
 @app.route('/search_data',methods=["POST"])

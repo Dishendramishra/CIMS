@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRL CIMS</title>
+
+    <link rel="stylesheet" href="static/styles/bootstrap.css" id="bootstrap-css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/all.min.css"/>
+    <link rel="stylesheet" href="static/styles/fontawesome/fontawesome.min.css"/>
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+
+    <script>
+        function logout() {
+            window.location.replace('/logout');
+        }
+    </script>
+    <style>
+        body{
+            background-image: url("static/img/background.png");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="text-white p-2">PRL CIMS</h1>
+    <div id="main_div" class="d-flex justify-content-center">
+        <table border="1" class="table table-hover bg-light w-50 rounded">
+            <thead>
+                <tr>
+                    <td align="right" colspan="4">
+                        <button class="btn btn-danger" onclick="signout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+                        <button class="btn btn-primary" onclick="location.href = '/';"><i class="fas fa-home"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    {% for col in colnames %}
+                    <th style="text-align: center;">{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records%}
+                <tr>
+                    <td>{{loop.index0+1}}</td>
+                    {% for col in colnames[1:] %}
+                        {% if col=="pcdt-id" %}
+                            <td><a href="/view_data?pcdt_id={{ record[col] }}">{{ record[col] }}</a></td>
+                        {% else %}
+                            <td>{{ record[col] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<script>
+    $("#submit").addClass("btn btn-success");
+</script>
+
+</html>
