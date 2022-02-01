@@ -71,3 +71,18 @@ sudo systemctl status olb
 ```
 sudo journalctl -f --unit=olb 
 ```
+
+## Backup & Restore MongoDB
+
+### Backup
+
+```sh
+mongodump -d <database name> --gzip --archive=<filename>.gz 
+
+```
+### Restore
+
+```shell
+mongorestore --gzip --archive=<filename>.gz
+```
+
